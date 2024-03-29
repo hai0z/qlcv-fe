@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+.ql-editor {
+  min-height: 200px;
+}
+
+.fc-today-button {
+  background-color: hsl(var(--nextui-secondary)) !important;
+  color: white;
+  border-color: transparent !important;
+  margin-left: 10px !important;
+}
+.fc-prev-button {
+  background-color: hsl(var(--nextui-warning)) !important;
+  color: white;
+  border-color: transparent !important;
+}
+
+.fc-next-button {
+  background-color: hsl(var(--nextui-warning)) !important;
+  color: white;
+  border-color: transparent !important;
+}
+.fc-event {
+  margin-bottom: 10px !important;
+  min-height: 35px !important;
+  text-align: center !important;
+}
+
+.fc-dayGridWeek-button {
+  background-color: hsl(var(--nextui-warning)) !important;
+  border-color: transparent !important;
+  margin-left: 10px !important;
+}
+.fc-dayGridDay-button {
+  background-color: hsl(var(--nextui-warning)) !important;
+  border-color: transparent !important;
+  margin-left: 10px !important;
+}
+.fc-dayGridMonth-button {
+  background-color: hsl(var(--nextui-warning)) !important;
+  border-color: transparent !important;
+  margin-left: 10px !important;
+}

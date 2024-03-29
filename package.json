@@ -1,0 +1,59 @@
+{
+  "name": "qlcv-fe",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "webpack --mode production",
+    "build:dev": "webpack --mode development",
+    "build:start": "cd dist && PORT=8080 npx serve",
+    "start": "webpack serve --open --mode development",
+    "start:live": "webpack serve --open --mode development --live-reload --hot",
+    "proxy": "http://localhost:3000"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Jack Herrington",
+    "email": "jherr@pobox.com"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.8",
+    "@babel/plugin-transform-runtime": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
+    "@babel/preset-react": "^7.14.5",
+    "autoprefixer": "^10.1.0",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^6.3.0",
+    "dotenv-webpack": "^8.0.1",
+    "html-webpack-plugin": "^5.3.2",
+    "postcss": "^8.2.1",
+    "postcss-loader": "^4.1.0",
+    "style-loader": "^3.3.0",
+    "webpack": "^5.57.1",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.3.1"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.13.10",
+    "@fullcalendar/daygrid": "^6.1.10",
+    "@fullcalendar/react": "^6.1.10",
+    "@nextui-org/react": "^2.2.9",
+    "@nextui-org/system": "^2.0.15",
+    "@nextui-org/theme": "^2.1.17",
+    "apexcharts": "^3.46.0",
+    "axios": "^1.6.7",
+    "canvas-confetti": "^1.9.2",
+    "dayjs": "^1.11.10",
+    "framer-motion": "^11.0.5",
+    "html-react-parser": "^5.1.7",
+    "lucide": "^0.334.0",
+    "lucide-react": "^0.334.0",
+    "next-themes": "^0.2.1",
+    "react": "^18.2.0",
+    "react-apexcharts": "^1.4.1",
+    "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.1",
+    "react-quill": "^2.0.0",
+    "react-router-dom": "^6.22.1",
+    "tailwindcss": "^3.4.1",
+    "zustand": "^4.5.1"
+  }
+}
