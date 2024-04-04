@@ -8,16 +8,18 @@ import {
   CardHeader,
   Checkbox,
   Divider,
+  Input,
   Textarea,
 } from "@nextui-org/react";
 import { FileText, SendHorizontal } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import toast from "react-hot-toast";
 import dayjs from "dayjs";
 import useWorkStore from "../../../store/workStore";
 import { useNavigate } from "react-router-dom";
+import useUserStore from "../../../store/userStore";
 function AddWorkPage() {
   const navigate = useNavigate();
   const [work, setWork] = useState({
@@ -27,17 +29,48 @@ function AddWorkPage() {
     endTime: new Date(),
   });
 
-  const { createWork } = useWorkStore((state) => state);
+  const { createWork, addMemberToWork } = useWorkStore((state) => state);
 
   const [implementer, setImplementer] = useState([]);
 
+  const { getListUsers, listUsers } = useUserStore((state) => state);
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  useEffect(() => {
+    (async () => {
+      const users = await getListUsers();
+      setFilteredUsers(users);
+    })();
+  }, []);
+
   const addWork = async () => {
     const workId = await createWork(work);
-    for (let i = 0; i < implementer.length; i++) {}
+    for (let i = 0; i < implementer.length; i++) {
+      await addMemberToWork(workId, implementer[i]);
+    }
     toast.success("Thêm công  việc thành công");
     navigate("/work-info/" + workId);
   };
 
+  const handleSelectUser = (e) => {
+    if (e.target.checked) {
+      setImplementer([...implementer, e.target.value]);
+    } else {
+      setImplementer(
+        implementer.filter((implementer) => implementer !== e.target.value)
+      );
+    }
+  };
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+    setFilteredUsers(
+      listUsers.filter((user) =>
+        user.name.toLowerCase().includes(e.target.value.toLowerCase())
+      )
+    );
+  };
   return (
     <div className="mx-6 lg:mx-28 bg-background min-h-screen pb-16">
       <div className="lg:pt-24 pt-8 w-full h-full">
@@ -100,8 +133,8 @@ function AddWorkPage() {
                   </Accordion>
                 </div>
                 <Divider className="mt-4" />
-                <div className="flex flex-col lg:flex-row justify-between w-full   gap-4  mt-10 pb-10">
-                  <div className="flex flex-col  w-full">
+                <div className="flex flex-col lg:flex-row justify-between w-full gap-4  mt-10 pb-10 flex-wrap">
+                  <div className="flex flex-col">
                     <span className="text-small">Thời gian thực hiện từ</span>
                     <input
                       onChange={(e) => {
@@ -115,7 +148,7 @@ function AddWorkPage() {
                       className="w-[450px] py-2 border rounded-md mt-2 px-2"
                     />
                   </div>
-                  <div className="flex flex-col w-full">
+                  <div className="flex flex-col">
                     <span className="text-small">Thời hạn đến</span>
                     <input
                       onChange={(e) => {
@@ -151,8 +184,15 @@ function AddWorkPage() {
               </CardHeader>
               <Divider />
               <CardBody>
-                <div className="h-60 ">
-                  {[].map((user, index) => (
+                <div className="h-80">
+                  <Input
+                    placeholder="Nhập tên người dùng..."
+                    value={searchTerm}
+                    size="sm"
+                    onChange={handleSearch}
+                    className="my-4"
+                  />
+                  {filteredUsers?.map((user, index) => (
                     <Card
                       radius="none"
                       className="my-2"
@@ -163,20 +203,7 @@ function AddWorkPage() {
                         <div className="flex flex-row items-center gap-2">
                           <Checkbox
                             value={user.id}
-                            onChange={(e) => {
-                              if (e.target.checked) {
-                                setImplementer([
-                                  ...implementer,
-                                  e.target.value,
-                                ]);
-                              } else {
-                                setImplementer(
-                                  implementer.filter(
-                                    (i) => i !== e.target.value
-                                  )
-                                );
-                              }
-                            }}
+                            onChange={handleSelectUser}
                           />
                           <Avatar
                             src={user.avatar || ""}

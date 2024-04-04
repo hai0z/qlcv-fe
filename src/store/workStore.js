@@ -131,6 +131,15 @@ const useWorkStore = create((set) => ({
       throw error;
     }
   },
+  addMemberToWork: async (workId, userId) => {
+    try {
+      await api.post("/work/add-member/" + workId, {
+        userId,
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
 }));
 
 export default useWorkStore;
