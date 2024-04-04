@@ -9,6 +9,11 @@ import {
   Chip,
   Tooltip,
   getKeyValue,
+  Card,
+  CardHeader,
+  CardBody,
+  Divider,
+  Avatar,
 } from "@nextui-org/react";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -42,6 +47,7 @@ function listUsersPage() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const [filteredUsers, setFilteredUsers] = useState([]);
+
   useEffect(() => {
     (async () => {
       const users = await getListUsers();
@@ -138,6 +144,7 @@ function listUsersPage() {
             <Table
               aria-label="Example table with custom cells"
               className="mt-4"
+              radius="none"
             >
               <TableHeader columns={columns}>
                 {(column) => (
@@ -160,13 +167,25 @@ function listUsersPage() {
               </TableBody>
             </Table>
           </div>
-          {/* <div
+          <div
             className="w-full xl:w-4/12 mt-[44px]"
             initial={{ opacity: 0, x: 100 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 100 }}
             transition={{ duration: 0.3, delay: 0.25 }}
-          ></div> */}
+          >
+            <Card>
+              <CardHeader>
+                <h2 className="font-bold text-lg">Thông tin nhân sự</h2>
+              </CardHeader>
+              <Divider />
+              <CardBody>
+                <div className="flex flex-col">
+                  <Avatar />
+                </div>
+              </CardBody>
+            </Card>
+          </div>
         </div>
       </div>
     </div>
