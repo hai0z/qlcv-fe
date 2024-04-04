@@ -45,23 +45,28 @@ function AddUser() {
   };
 
   const handleCreateUser = async () => {
-    console.log(userInfo);
-    const user = await createUser({
-      ...userInfo,
-      avatar: seletedImage || DEFAULT_IMAGE,
-    });
-    if (user) {
-      setUserInfo({
-        email: "",
-        name: "",
-        role: "USER",
-        address: "",
-        password: "12345678",
-        avatar: "",
-        phone: "",
-      });
-    }
-    toast.success("Tạo nhân sự thành công");
+    toast.promise(
+      createUser({
+        ...userInfo,
+        avatar: seletedImage || DEFAULT_IMAGE,
+      }),
+      {
+        loading: "Đang tạo ...",
+        success: () => {
+          setUserInfo({
+            email: "",
+            name: "",
+            role: "USER",
+            address: "",
+            password: "12345678",
+            avatar: "",
+            phone: "",
+          });
+          return "Tạo thành công";
+        },
+        error: (err) => err.message,
+      }
+    );
   };
   return (
     <div className="w-full flex flex-col gap-8 xl:flex-row">

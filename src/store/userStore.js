@@ -1,10 +1,7 @@
 import { create } from "zustand";
 import api from "../api/config";
 const useUserStore = create((set) => ({
-  user: null,
-  setUser: (user) => set({ user }),
   listUsers: [],
-
   getListUsers: async () => {
     try {
       const res = await api.get("/user");
@@ -18,9 +15,9 @@ const useUserStore = create((set) => ({
   getUserByEmail: async (email) => {
     try {
       const res = await api.get(`/user/${email}`);
-      set({ user: res.data });
+      return res.data;
     } catch (error) {
-      set({ user: null });
+      throw error.response.data;
     }
   },
 
@@ -30,7 +27,7 @@ const useUserStore = create((set) => ({
         data,
       });
     } catch (error) {
-      set({ user: null });
+      throw error.response.data;
     }
   },
 }));
