@@ -17,7 +17,6 @@ import {
 } from "@nextui-org/react";
 import { Eye, Pencil, Trash2, PlusCircle } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import toast from "react-hot-toast";
 import dayjs from "dayjs";

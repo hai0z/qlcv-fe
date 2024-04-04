@@ -208,17 +208,11 @@ export default function App() {
               <DropdownSection showDivider>
                 <DropdownItem
                   as={Link}
-                  href="/work-status"
+                  to="/work-status"
                   key="autoscaling"
                   startContent={<Table />}
                 >
                   Bảng trạng thái
-                </DropdownItem>
-                <DropdownItem key="usage_metrics" startContent={<Tag />}>
-                  Bảng phân loại
-                </DropdownItem>
-                <DropdownItem key="production_ready" startContent={<Star />}>
-                  Quan trọng
                 </DropdownItem>
               </DropdownSection>
               <DropdownSection title={"Hành động"}>

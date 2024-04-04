@@ -11,7 +11,9 @@ import ListUserPage from "../pages/users/listUser";
 import DeadLine from "../pages/works/deadline/DeadLine";
 import EditWorkPage from "../pages/works/work-edit/editWorkPage";
 import Menu from "../pages/users/components/Menu";
+import WorkStatusMenu from "../pages/works/work-status/components/workStatusMenu";
 import AddUser from "../pages/users/addUser";
+import WorkStatusPage from "../pages/works/work-status";
 const RootLayout = () => {
   return (
     <AuthProvider>
@@ -21,6 +23,26 @@ const RootLayout = () => {
         <Toaster />
       </>
     </AuthProvider>
+  );
+};
+const WorkStatusLayout = () => {
+  return (
+    <div className="mx-6 lg:mx-28 bg-background min-h-screen pb-16">
+      <div className="lg:pt-24 pt-8 w-full h-full">
+        <div className="w-full flex flex-col gap-8 xl:flex-row">
+          <WorkStatusMenu />
+          <div
+            className="w-full xl:w-8/12"
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -100 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Outlet />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 const UserLayout = () => {
@@ -51,6 +73,36 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage />,
+      },
+      {
+        path: "/work-status",
+        element: <WorkStatusLayout />,
+        children: [
+          {
+            path: "/work-status",
+            element: <WorkStatusPage />,
+          },
+          {
+            path: "/work-status/completed",
+            element: <WorkStatusPage />,
+          },
+          {
+            path: "/work-status/pasue",
+            element: <WorkStatusPage />,
+          },
+          {
+            path: "/work-status/pending",
+            element: <WorkStatusPage />,
+          },
+          {
+            path: "/work-status/deadline",
+            element: <WorkStatusPage />,
+          },
+          {
+            path: "/work-status/new",
+            element: <WorkStatusPage />,
+          },
+        ],
       },
       {
         path: "/work-add",
