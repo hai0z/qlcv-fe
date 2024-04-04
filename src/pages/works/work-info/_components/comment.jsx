@@ -74,7 +74,7 @@ function Comment() {
         </CardBody>
         {work.comments?.map((comment) => {
           return (
-            <Card className="" shadow="none" radius="none">
+            <Card className="" shadow="none" radius="none" key={comment.id}>
               <CardBody className="my-2">
                 <div className="flex flex-row justify-between">
                   <div className="flex flex-row gap-2 items-center">

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -12,29 +12,63 @@ import {
   Card,
   CardHeader,
   useDisclosure,
+  Listbox,
+  ListboxItem,
+  ListboxWrapper,
 } from "@nextui-org/react";
 import toast from "react-hot-toast";
 import { UserRound } from "lucide-react";
-
+import useUserStore from "../../../../store/userStore";
+import useWorkStore from "../../../../store/workStore";
 export default function AddMemberToWorkModal() {
-  const [listUser, setListUser] = React.useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
 
-  const [selectedUsers, setSelectedUsers] = React.useState([]);
+  const [users, setUsers] = useState([]);
 
-  useEffect(() => {}, []);
+  const { getListUsers, listUsers } = useUserStore((state) => state);
+
+  const { addMemberToWork, work, getWorkById } = useWorkStore((state) => state);
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    (async () => {
+      const users = await getListUsers();
+      setFilteredUsers(users);
+    })();
+  }, []);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-  const handleAddMember = async () => {};
 
   const handleSelectUser = (e) => {
     const { checked, value } = e.target;
     if (checked) {
-      setSelectedUsers([...selectedUsers, value]);
+      setUsers([...users, value]);
     } else {
-      setSelectedUsers(selectedUsers.filter((i) => i !== value));
+      setUsers(users.filter((i) => i !== value));
     }
   };
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+    setFilteredUsers(
+      listUsers.filter((user) =>
+        user.name.toLowerCase().includes(e.target.value.toLowerCase())
+      )
+    );
+  };
+  const isUserInWork = (id) => {
+    return work.implementer.filter((i) => i.userId === id).length > 0;
+  };
+  const handleAddMembers = async () => {
+    for (let i = 0; i < users.length; i++) {
+      await addMemberToWork(work.id, users[i]);
+    }
+    toast.success("Them thanh cong");
+    getWorkById(work.id);
+    onOpenChange(false);
+  };
+  console.log(users);
   return (
     <>
       <div className="flex flex-row justify-between items-center mt-4">
@@ -47,7 +81,12 @@ export default function AddMemberToWorkModal() {
         >
           <span className="text-small">Thêm </span>
         </Button>
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="lg">
+        <Modal
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          size="lg"
+          scrollBehavior="inside"
+        >
           <ModalContent>
             {(onClose) => (
               <>
@@ -56,31 +95,31 @@ export default function AddMemberToWorkModal() {
                 </ModalHeader>
                 <ModalBody>
                   <div>
-                    <Input placeholder="Tên người dùng..." />
+                    <Input
+                      placeholder="Tên người dùng..."
+                      onChange={handleSearch}
+                      value={searchTerm}
+                    />
                   </div>
                   <div>
-                    {listUser.map((user, index) => (
-                      <Card
-                        radius="none"
-                        className="my-2"
-                        key={user.id}
-                        shadow={"sm"}
+                    {filteredUsers?.map((user, index) => (
+                      <div
+                        className="flex flex-row items-center gap-2 py-3"
+                        key={index}
                       >
-                        <CardHeader>
-                          <div className="flex flex-row items-center gap-2">
-                            <Checkbox
-                              value={user.id}
-                              onChange={handleSelectUser}
-                            />
-                            <Avatar
-                              src={user.avatar || ""}
-                              showFallback
-                              name={user.name || user.email}
-                            />
-                            <h3>{user.name}</h3>
-                          </div>
-                        </CardHeader>
-                      </Card>
+                        <Checkbox
+                          value={user.id}
+                          defaultSelected={isUserInWork(user.id)}
+                          isDisabled={isUserInWork(user.id)}
+                          onChange={handleSelectUser}
+                        />
+                        <Avatar
+                          src={user.avatar || ""}
+                          showFallback
+                          name={user.name || user.email}
+                        />
+                        <h3>{user.name}</h3>
+                      </div>
                     ))}
                   </div>
                 </ModalBody>
@@ -88,7 +127,7 @@ export default function AddMemberToWorkModal() {
                   <Button color="danger" variant="light" onPress={onClose}>
                     Đóng
                   </Button>
-                  <Button color="primary" onPress={handleAddMember}>
+                  <Button color="primary" onPress={handleAddMembers}>
                     Thêm
                   </Button>
                 </ModalFooter>
