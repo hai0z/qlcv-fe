@@ -236,51 +236,22 @@ export default function App() {
               </DropdownSection>
             </DropdownMenu>
           </Dropdown>
-          <Dropdown>
-            <NavbarItem>
-              <DropdownTrigger>
-                <Button
-                  disableRipple
-                  className="p-0 bg-transparent data-[hover=true]:bg-transparent"
-                  radius="sm"
-                  variant="light"
-                  aria-label="Nhân lực"
-                  startContent={<UsersRound />}
-                  endContent={<ChevronDown />}
-                >
-                  Nhân lực
-                </Button>
-              </DropdownTrigger>
-            </NavbarItem>
-            <DropdownMenu
-              aria-label="ACME features"
-              className="w-[340px]"
-              itemClasses={{
-                base: "gap-4",
-              }}
+
+          <NavbarItem>
+            <Button
+              aria-label="Nhân sự"
+              disableRipple
+              className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+              radius="sm"
+              variant="light"
+              as={Link}
+              to={"/users"}
+              startContent={<UserRound />}
             >
-              <DropdownSection showDivider>
-                <DropdownItem
-                  key="autoscaling"
-                  startContent={<UserRound />}
-                  as={Link}
-                  to="/users"
-                >
-                  Các nhân sự
-                </DropdownItem>
-              </DropdownSection>
-              <DropdownSection title={"Hành động"}>
-                <DropdownItem
-                  key="delete"
-                  className="text-foreground"
-                  color="success"
-                  startContent={<PlusCircle />}
-                >
-                  Thêm mới
-                </DropdownItem>
-              </DropdownSection>
-            </DropdownMenu>
-          </Dropdown>
+              Nhân sự
+            </Button>
+          </NavbarItem>
+
           <NavbarItem>
             <Button
               aria-label="Trễ hạn"

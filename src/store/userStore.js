@@ -24,10 +24,11 @@ const useUserStore = create((set) => ({
     }
   },
 
-  createUser: async (user) => {
+  createUser: async (data) => {
     try {
-      const res = await api.post("/user", user);
-      set({ user: res.data });
+      await api.post("/user", {
+        data,
+      });
     } catch (error) {
       set({ user: null });
     }
