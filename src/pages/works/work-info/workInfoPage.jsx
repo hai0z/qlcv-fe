@@ -28,7 +28,6 @@ import Comment from "./_components/comment";
 import Implementer from "./_components/implementer";
 import ActionButton from "./_components/actionButton";
 import AddMemberModal from "./_components/addMemberModal";
-import WorkLogModal from "./_components/logModal";
 
 import relativeTime from "dayjs/plugin/relativeTime";
 import { motion } from "framer-motion";
@@ -137,9 +136,6 @@ function WorkInfoPage() {
             <div className="mt-4 gap-4 flex flex-col">
               <Implementer />
             </div>
-            <div className="mt-4 gap-4 flex flex-col">
-              <Comment />
-            </div>
           </motion.div>
           <motion.div
             className="w-full xl:w-4/12 mt-[44px]"
@@ -149,7 +145,12 @@ function WorkInfoPage() {
             transition={{ duration: 0.3, delay: 0.25, ease: "linear" }}
           >
             <div className="flex w-full flex-col">
-              <Tabs aria-label="Options" radius="none">
+              <Tabs
+                aria-label="Options"
+                radius="none"
+                className="mx-1"
+                color="primary"
+              >
                 <Tab key="overview" title="Chung">
                   <Card shadow="sm" radius="none">
                     <CardBody>
@@ -239,6 +240,9 @@ function WorkInfoPage() {
                       </div>
                     </CardBody>
                   </Card>
+                  <div className="mt-4">
+                    <Comment />
+                  </div>
                 </Tab>
                 <Tab key="activity" title="Hoạt động gần đây">
                   <Card shadow="sm" radius="none">
