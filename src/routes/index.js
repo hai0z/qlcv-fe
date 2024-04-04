@@ -7,7 +7,7 @@ import CalenderPage from "../pages/calender/calenderPage";
 import WorkInfoPage from "../pages/works/work-info/workInfoPage";
 import { Toaster } from "react-hot-toast";
 import AddWorkPage from "../pages/works/work-add/addWorkPage";
-
+import ListUserPage from "../pages/users/list-user/listUser";
 const RootLayout = () => {
   return (
     <AuthProvider>
@@ -39,6 +39,11 @@ export const router = createBrowserRouter([
       {
         path: "/work-info/:workId",
         element: <WorkInfoPage />,
+      },
+      {
+        path: "*",
+        element: "/users",
+        element: <ListUserPage />,
       },
     ],
   },

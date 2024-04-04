@@ -239,7 +239,6 @@ export default function App() {
                   className="p-0 bg-transparent data-[hover=true]:bg-transparent"
                   radius="sm"
                   variant="light"
-                  as={Link}
                   aria-label="Nhân lực"
                   startContent={<UsersRound />}
                   endContent={<ChevronDown />}
@@ -256,7 +255,12 @@ export default function App() {
               }}
             >
               <DropdownSection showDivider>
-                <DropdownItem key="autoscaling" startContent={<UserRound />}>
+                <DropdownItem
+                  key="autoscaling"
+                  startContent={<UserRound />}
+                  as={Link}
+                  to="/users"
+                >
                   Các nhân sự
                 </DropdownItem>
                 <DropdownItem key="usage_metrics" startContent={<Workflow />}>
