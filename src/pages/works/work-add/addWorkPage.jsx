@@ -219,6 +219,7 @@ function AddWorkPage() {
               </CardBody>
             </Card>
             <Button
+              isDisabled={implementer.length === 0}
               onPress={addWork}
               radius="none"
               color="warning"
