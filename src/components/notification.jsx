@@ -35,9 +35,11 @@ export default function Notification({ data }) {
         <CardHeader className="flex justify-between items-center">
           <div className="font-bold text-xl">
             Thông báo gần đây{" "}
-            <Chip size="sm" color="primary">
-              {data.filter((item) => item.isRead === false).length}
-            </Chip>
+            {data.filter((item) => item.isRead === false).length > 0 && (
+              <Chip size="sm" color="primary">
+                {data.filter((item) => item.isRead === false).length}
+              </Chip>
+            )}
           </div>
         </CardHeader>
         <CardBody>

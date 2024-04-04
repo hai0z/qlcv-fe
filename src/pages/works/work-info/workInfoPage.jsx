@@ -8,6 +8,8 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Tab,
+  Tabs,
   Progress,
   Spinner,
 } from "@nextui-org/react";
@@ -111,7 +113,6 @@ function WorkInfoPage() {
                         "HH:mm:ss, dddd, DD/MM/YYYY  "
                       )}
                     </p>
-                    <WorkLogModal />
                   </div>
                   <Progress
                     value={workProgess}
@@ -147,90 +148,128 @@ function WorkInfoPage() {
             exit={{ opacity: 0, scale: 0.5 }}
             transition={{ duration: 0.3, delay: 0.25, ease: "linear" }}
           >
-            <Card shadow="sm" radius="none">
-              <CardBody>
-                <div className="flex flex-row gap-4 p-2">
-                  <Avatar
-                    src={work.createdBy.avatar}
-                    name={work.createdBy.name}
-                    size="lg"
-                    showFallback
-                  />
-                  <div>
-                    <p className="text-lg font-bold">{work.createdBy.name}</p>
-                    <p>{work.createdBy.role}</p>
-                  </div>
-                  <div className="ml-auto">
-                    <Popover placement="top">
-                      <PopoverTrigger>
-                        <MoreVertical className="cursor-pointer" />
-                      </PopoverTrigger>
-                      <PopoverContent>
-                        <div className="px-1 py-2">
-                          <div className="text-small font-bold">
-                            Popover Content
+            <div className="flex w-full flex-col">
+              <Tabs aria-label="Options" radius="none">
+                <Tab key="overview" title="Chung">
+                  <Card shadow="sm" radius="none">
+                    <CardBody>
+                      <div className="flex flex-row gap-4 p-2">
+                        <Avatar
+                          src={work.createdBy.avatar}
+                          name={work.createdBy.name}
+                          size="lg"
+                          showFallback
+                        />
+                        <div>
+                          <p className="text-lg font-bold">
+                            {work.createdBy.name}
+                          </p>
+                          <p>{work.createdBy.role}</p>
+                        </div>
+                        <div className="ml-auto">
+                          <Popover placement="top">
+                            <PopoverTrigger>
+                              <MoreVertical className="cursor-pointer" />
+                            </PopoverTrigger>
+                            <PopoverContent>
+                              <div className="px-1 py-2">
+                                <div className="text-small font-bold">
+                                  Popover Content
+                                </div>
+                                <div className="text-tiny">
+                                  This is the popover content
+                                </div>
+                              </div>
+                            </PopoverContent>
+                          </Popover>
+                        </div>
+                      </div>
+                      <Divider className="my-4" />
+                      <div className="p-2 my-2">
+                        <div
+                          className="flex flex-row  items-center"
+                          style={{
+                            justifyContent:
+                              work.status !== "COMPLETED"
+                                ? "space-between"
+                                : "center",
+                          }}
+                        >
+                          <div className="flex flex-col justify-center items-center ">
+                            {work.status !== "COMPLETED" && (
+                              <div className="flex flex-col items-center">
+                                {dayjs(work.endTime) > dayjs() ? (
+                                  <span className="text-lg">Thời hạn</span>
+                                ) : (
+                                  <span className="text-lg"> Trễ hạn</span>
+                                )}
+                                <span
+                                  className={`text-2xl font-bold ${
+                                    dayjs(work.endTime) > dayjs()
+                                      ? "text-success"
+                                      : "text-danger  "
+                                  }`}
+                                >
+                                  {dayjs().to(dayjs(work.endTime))}
+                                </span>
+                              </div>
+                            )}
                           </div>
-                          <div className="text-tiny">
-                            This is the popover content
+                          <div className="flex flex-col items-center">
+                            <span className="text-sm ">
+                              Từ{" "}
+                              {dayjs(work.startTime).format(
+                                "HH:mm, dddd, DD/MM/YYYY"
+                              )}
+                            </span>
+                            <MoreVertical size={14} />
+                            Đến{" "}
+                            {dayjs(work.endTime).format(
+                              "HH:mm, dddd, DD/MM/YYYY"
+                            )}
                           </div>
                         </div>
-                      </PopoverContent>
-                    </Popover>
-                  </div>
-                </div>
-                <Divider className="my-4" />
-                <div className="p-2 my-2">
-                  <div
-                    className="flex flex-row  items-center"
-                    style={{
-                      justifyContent:
-                        work.status !== "COMPLETED"
-                          ? "space-between"
-                          : "center",
-                    }}
-                  >
-                    <div className="flex flex-col justify-center items-center ">
-                      {work.status !== "COMPLETED" && (
-                        <div className="flex flex-col items-center">
-                          {dayjs(work.endTime) > dayjs() ? (
-                            <span className="text-lg">Thời hạn</span>
-                          ) : (
-                            <span className="text-lg"> Trễ hạn</span>
-                          )}
-                          <span
-                            className={`text-2xl font-bold ${
-                              dayjs(work.endTime) > dayjs()
-                                ? "text-success"
-                                : "text-danger  "
-                            }`}
-                          >
-                            {dayjs().to(dayjs(work.endTime))}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <span className="text-sm ">
-                        Từ{" "}
-                        {dayjs(work.startTime).format(
-                          "HH:mm, dddd, DD/MM/YYYY"
+                      </div>
+                    </CardBody>
+                  </Card>
+                  <Card className="mt-4" radius="none" shadow="sm">
+                    <CardBody>
+                      <div className="w-full">
+                        <ActionButton />
+                      </div>
+                    </CardBody>
+                  </Card>
+                </Tab>
+                <Tab key="activity" title="Hoạt động gần đây">
+                  <Card shadow="sm" radius="none">
+                    <CardBody>
+                      <div className="h-[500px]">
+                        {work.WorkLog.length > 0 ? (
+                          work.WorkLog?.map((item) => (
+                            <div
+                              key={item.id}
+                              className="w-full flex flex-col gap-4 my-2"
+                            >
+                              <span className="text-tiny">
+                                {dayjs(item.createdAt).format(
+                                  "HH:mm:ss, dddd, DD/MM/YYYY  "
+                                )}
+                              </span>
+                              <span className="text-sm text-primary">
+                                {item.content}
+                              </span>
+                              <Divider />
+                            </div>
+                          ))
+                        ) : (
+                          <span className="text-sm ">Chưa có hoạt động</span>
                         )}
-                      </span>
-                      <MoreVertical size={14} />
-                      Đến{" "}
-                      {dayjs(work.endTime).format("HH:mm, dddd, DD/MM/YYYY")}
-                    </div>
-                  </div>
-                </div>
-              </CardBody>
-            </Card>
-            <Card className="mt-4" radius="none" shadow="sm">
-              <CardBody>
-                <div className="w-full">
-                  <ActionButton />
-                </div>
-              </CardBody>
-            </Card>
+                      </div>
+                    </CardBody>
+                  </Card>
+                </Tab>
+              </Tabs>
+            </div>
           </motion.div>
         </div>
       </div>

@@ -263,9 +263,6 @@ export default function App() {
                 >
                   Các nhân sự
                 </DropdownItem>
-                <DropdownItem key="usage_metrics" startContent={<Workflow />}>
-                  Các bô phận
-                </DropdownItem>
               </DropdownSection>
               <DropdownSection title={"Hành động"}>
                 <DropdownItem
@@ -275,14 +272,6 @@ export default function App() {
                   startContent={<PlusCircle />}
                 >
                   Thêm mới
-                </DropdownItem>
-                <DropdownItem
-                  key="delete"
-                  className="text-foreground"
-                  color="success"
-                  startContent={<UserPlus />}
-                >
-                  Mời nhân sự
                 </DropdownItem>
               </DropdownSection>
             </DropdownMenu>
