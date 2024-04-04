@@ -105,7 +105,7 @@ export default function AddMemberToWorkModal() {
                     {filteredUsers?.map((user, index) => (
                       <div
                         className="flex flex-row items-center gap-2 py-3"
-                        key={index}
+                        key={user.id}
                       >
                         <Checkbox
                           value={user.id}
