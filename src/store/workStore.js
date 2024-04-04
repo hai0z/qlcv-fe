@@ -17,6 +17,7 @@ const useWorkStore = create((set) => ({
     try {
       const res = await api.get(`/work/${id}`);
       set({ work: res.data });
+      return res.data;
     } catch (error) {
       set({ work: null });
     }
@@ -32,6 +33,10 @@ const useWorkStore = create((set) => ({
         },
       });
       set({ loading: false });
+      return {
+        data: res.data,
+        totalPage: res.totalPage,
+      };
     } catch (error) {
       set({ works: { data: [], totalPage: 0 } });
       set({ loading: false });
@@ -105,6 +110,15 @@ const useWorkStore = create((set) => ({
       throw error;
     }
   },
+  updateWork: async (workId, data) => {
+    try {
+      await api.put("/work/" + workId, {
+        data,
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
   deleteWorkRequest: async (workRequestId) => {
     try {
       await api.delete("/work/delete-work-request/" + workRequestId);
@@ -135,6 +149,18 @@ const useWorkStore = create((set) => ({
     try {
       await api.post("/work/add-member/" + workId, {
         userId,
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
+  removeMemberFromWork: async (workId, userId) => {
+    console.log(workId, userId);
+    try {
+      await api.delete("/work/remove-member/" + workId, {
+        data: {
+          userId,
+        },
       });
     } catch (error) {
       throw error;

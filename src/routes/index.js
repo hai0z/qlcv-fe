@@ -8,6 +8,8 @@ import WorkInfoPage from "../pages/works/work-info/workInfoPage";
 import { Toaster } from "react-hot-toast";
 import AddWorkPage from "../pages/works/work-add/addWorkPage";
 import ListUserPage from "../pages/users/list-user/listUser";
+import DeadLine from "../pages/works/deadline/DeadLine";
+import EditWorkPage from "../pages/works/work-edit/editWorkPage";
 const RootLayout = () => {
   return (
     <AuthProvider>
@@ -41,9 +43,16 @@ export const router = createBrowserRouter([
         element: <WorkInfoPage />,
       },
       {
+        path: "/work-edit/:workId",
+        element: <EditWorkPage />,
+      },
+      {
+        path: "/deadline",
+        element: <DeadLine />,
+      },
+      {
         path: "*",
-        element: "/users",
-        element: <ListUserPage />,
+        element: <HomePage />,
       },
     ],
   },

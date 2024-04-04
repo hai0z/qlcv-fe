@@ -30,12 +30,13 @@ import {
   UserPlus,
   UserRound,
   UsersRound,
-  Workflow,
+  CalendarClock,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/authProvider";
 import ThemeSwitch from "./themeSwitch";
 import useWorkStore from "../store/workStore";
+import dayjs from "dayjs";
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
@@ -43,7 +44,11 @@ export default function App() {
 
   const { auth: user, handleLogOut } = useContext(AuthContext);
 
-  const { todayWorks, getTodayWorks } = useWorkStore((state) => state);
+  const [deadlines, setDeadLines] = React.useState([]);
+
+  const { todayWorks, getTodayWorks, listWorks, getListWorks } = useWorkStore(
+    (state) => state
+  );
 
   useEffect(() => {
     getTodayWorks();
@@ -276,6 +281,20 @@ export default function App() {
               </DropdownSection>
             </DropdownMenu>
           </Dropdown>
+          <NavbarItem>
+            <Button
+              aria-label="Trễ hạn"
+              disableRipple
+              className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+              radius="sm"
+              variant="light"
+              as={Link}
+              to={"/deadline"}
+              startContent={<CalendarClock />}
+            >
+              Trễ hạn
+            </Button>
+          </NavbarItem>
           <NavbarItem>
             <Button
               aria-label="Lịch làm việc"

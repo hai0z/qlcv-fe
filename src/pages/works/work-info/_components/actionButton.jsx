@@ -19,7 +19,7 @@ import {
   X,
 } from "lucide-react";
 
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import confetti from "canvas-confetti";
 import useWorkStore from "../../../../store/workStore";
@@ -143,7 +143,7 @@ export default function ActionButton() {
 
           <Button
             as={Link}
-            href={`work-edit/${work.id}`}
+            to={`/work-edit/${work.id}`}
             startContent={<Edit />}
           >
             Sửa

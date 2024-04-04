@@ -15,6 +15,8 @@ import {
   ModalBody,
   Textarea,
   ModalFooter,
+  Listbox,
+  ListboxItem,
 } from "@nextui-org/react";
 import dayjs from "dayjs";
 import "dayjs/locale/vi";
@@ -34,6 +36,7 @@ function Implementer() {
     getWorkById,
     deleteWorkRequest,
     createWorkRequest,
+    removeMemberFromWork,
   } = useWorkStore((state) => state);
 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -84,10 +87,24 @@ function Implementer() {
       }
     );
   };
+
   const handleDeleteWorkRequest = async (id) => {
     const option = confirm("Bạn muốn xóa yêu cầu này?");
     option &&
       toast.promise(deleteWorkRequest(id), {
+        loading: "Đang xóa...",
+        success: () => {
+          getWorkById(work.id);
+          return "Đã xóa";
+        },
+        error: (err) => toast.error(err.message),
+      });
+  };
+  const handleRemoveImplementer = async (implementerId) => {
+    alert(implementerId);
+    const option = confirm("Bạn muốn xóa người liệu này?");
+    option &&
+      toast.promise(removeMemberFromWork(work.id, implementerId), {
         loading: "Đang xóa...",
         success: () => {
           getWorkById(work.id);
@@ -119,14 +136,19 @@ function Implementer() {
                       <MoreVertical size={16} />
                     </PopoverTrigger>
                     <PopoverContent>
-                      <div className="px-1 py-2">
-                        <div className="text-small font-bold">
-                          <Link href={"#"}>Xem thông tin</Link>
-                        </div>
-                        <div className="text-tiny">
-                          <Button>Xoá khỏi công việc</Button>
-                        </div>
-                      </div>
+                      <Listbox aria-label="Actions">
+                        <ListboxItem key="new">Xem thông tin</ListboxItem>
+                        <ListboxItem
+                          key="delete"
+                          className="text-danger"
+                          color="danger"
+                          onClick={() =>
+                            handleRemoveImplementer(implementer.user.id)
+                          }
+                        >
+                          Xoá khỏi công việc
+                        </ListboxItem>
+                      </Listbox>
                     </PopoverContent>
                   </Popover>
                 </div>

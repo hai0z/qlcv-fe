@@ -129,7 +129,9 @@ function WorkInfoPage() {
                   <FileText size={16} />
                   <span>Mô tả chi tiết</span>
                 </div>
-                <div className="mt-4 px-4">{parse(work.description)}</div>
+                <div className="mt-4 px-4 prose ">
+                  {parse(work.description)}
+                </div>
               </CardBody>
             </Card>
             <AddMemberModal />
