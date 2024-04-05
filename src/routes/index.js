@@ -15,6 +15,7 @@ import WorkStatusMenu from "../pages/works/work-status/components/workStatusMenu
 import AddUser from "../pages/users/addUser";
 import WorkStatusPage from "../pages/works/work-status";
 import DeadLineMenu from "../pages/works/deadline/components/Menu";
+import Profile from "../pages/users/profile";
 const RootLayout = () => {
   return (
     <AuthProvider>
@@ -46,6 +47,7 @@ const WorkStatusLayout = () => {
     </div>
   );
 };
+
 const UserLayout = () => {
   return (
     <div className="mx-6 lg:mx-28 bg-background min-h-screen pb-16">
@@ -66,6 +68,7 @@ const UserLayout = () => {
     </div>
   );
 };
+
 const DeadLineLayout = () => {
   return (
     <div className="mx-6 lg:mx-28 bg-background min-h-screen pb-16">
@@ -86,6 +89,7 @@ const DeadLineLayout = () => {
     </div>
   );
 };
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -164,6 +168,10 @@ export const router = createBrowserRouter([
             element: <AddUser />,
           },
         ],
+      },
+      {
+        path: "/profile/:userId",
+        element: <Profile />,
       },
       {
         path: "*",

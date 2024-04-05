@@ -103,7 +103,7 @@ function WorkStatusPage() {
               <TableColumn>Bắt đầu</TableColumn>
               <TableColumn>Thời hạn</TableColumn>
             </TableHeader>
-            <TableBody>
+            <TableBody emptyContent="Không có dữ liệu">
               {works.map((w, index) => {
                 const workProgess = () => calulateWorkProgress(w);
                 return (

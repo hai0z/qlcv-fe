@@ -9,7 +9,6 @@ const useWorkStore = create((set) => ({
   },
   todayWorks: [],
   events: [],
-  progressChart: [],
   work: null,
   loading: true,
   setWork: (work) => set({ work }),
@@ -68,12 +67,10 @@ const useWorkStore = create((set) => ({
       set({ events: [] });
     }
   },
-  getProgressChart: async () => {
+  getProgressChart: async (id) => {
     try {
-      const res = await api.get("/work/chart");
-      set({
-        progressChart: res.data,
-      });
+      const res = await api.get("/work/chart/" + id);
+      return res.data;
     } catch (error) {
       set({ progressChart: [] });
     }

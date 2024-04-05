@@ -142,7 +142,13 @@ export default function App() {
                   </DropdownItem>
                 </DropdownSection>
 
-                <DropdownItem key="settings">Thông tin cá nhân</DropdownItem>
+                <DropdownItem
+                  key="settings"
+                  as={Link}
+                  to={"/profile/" + user?.id}
+                >
+                  Thông tin cá nhân
+                </DropdownItem>
 
                 <DropdownItem
                   onClick={handleLogOut}

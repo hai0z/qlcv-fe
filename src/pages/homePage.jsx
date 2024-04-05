@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import WorkCard from "../components/workCard";
 import ProgressChart from "../components/progressChart";
 import useWorkStore from "../store/workStore";
@@ -9,16 +9,22 @@ import useNotificationStore from "../store/notificationStore";
 import { useSearchParams } from "react-router-dom";
 import SkeletonCard from "../components/skeletonCard";
 import { Tab, Tabs } from "@nextui-org/react";
+import { AuthContext } from "../context/authProvider";
 const PAGE_SIZE = 5;
 
 const HomePage = () => {
   const [searchParams] = useSearchParams();
 
-  const { listWorks, getListWorks, getProgressChart, progressChart, loading } =
-    useWorkStore((state) => state);
+  const [progressChart, setProgressChart] = React.useState([]);
+  const { listWorks, getListWorks, getProgressChart, loading } = useWorkStore(
+    (state) => state
+  );
+
   const { notifications, getNotification } = useNotificationStore(
     (state) => state
   );
+
+  const { auth } = useContext(AuthContext);
 
   useEffect(() => {
     getListWorks(Number(searchParams.get("page") || 1), PAGE_SIZE);
@@ -26,7 +32,10 @@ const HomePage = () => {
   }, [searchParams.get("page")]);
 
   useEffect(() => {
-    getProgressChart();
+    (async () => {
+      const data = await getProgressChart(auth.id);
+      setProgressChart(data);
+    })();
     getNotification();
   }, []);
 

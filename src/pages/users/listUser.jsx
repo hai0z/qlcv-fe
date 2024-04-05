@@ -7,15 +7,11 @@ import {
   DropdownTrigger,
   Button,
 } from "@nextui-org/react";
-import { Eye, Pencil, Trash2, PlusCircle, MoreVertical } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import "react-quill/dist/quill.snow.css";
-import toast from "react-hot-toast";
-import dayjs from "dayjs";
-import useWorkStore from "../../store/workStore";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useUserStore from "../../store/userStore";
-import { Listbox, ListboxSection, ListboxItem } from "@nextui-org/react";
 import { AgGridReact } from "ag-grid-react"; // AG Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-material.css";
@@ -25,11 +21,8 @@ function listUsersPage() {
 
   //get theme from next theme
   const { theme } = useTheme();
-  const [implementer, setImplementer] = useState([]);
 
   const { getListUsers } = useUserStore((state) => state);
-
-  const [searchTerm, setSearchTerm] = useState("");
 
   const [listUsers, setListUser] = useState([]);
 
@@ -39,16 +32,6 @@ function listUsersPage() {
       setListUser(users);
     })();
   }, []);
-
-  const handleSelectUser = (e) => {
-    if (e.target.checked) {
-      setImplementer([...implementer, e.target.value]);
-    } else {
-      setImplementer(
-        implementer.filter((implementer) => implementer !== e.target.value)
-      );
-    }
-  };
 
   const [colDefs, setColDefs] = useState([
     {
@@ -63,6 +46,7 @@ function listUsersPage() {
     { field: "email", headerName: "Email", floatingFilter: true },
     { field: "name", headerName: "Họ và tên", floatingFilter: true },
     { field: "address", headerName: "Địa chỉ", floatingFilter: true },
+    { field: "password", headerName: "Mật khẩu", floatingFilter: true },
     {
       field: "role",
       headerName: "Vai trò",
@@ -73,7 +57,7 @@ function listUsersPage() {
       ),
     },
     {
-      field: "email",
+      field: "id",
       headerName: "Hành động",
       cellRenderer: (params) => (
         <div className="relative flex justify-start items-center gap-2 h-full">
@@ -84,7 +68,9 @@ function listUsersPage() {
               </Button>
             </DropdownTrigger>
             <DropdownMenu>
-              <DropdownItem>Xem thông tin</DropdownItem>
+              <DropdownItem as={Link} to={`/profile/${params.value}`}>
+                Xem thông tin
+              </DropdownItem>
               <DropdownItem>Sửa</DropdownItem>
               <DropdownItem>Xoá</DropdownItem>
             </DropdownMenu>

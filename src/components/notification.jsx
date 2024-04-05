@@ -25,12 +25,7 @@ export default function Notification({ data }) {
     });
   };
   return (
-    <motion.div
-      initial={{ opacity: 0, translateX: 200 }}
-      animate={{ opacity: 1, translateX: 0 }}
-      exit={{ opacity: 0, translateX: 200 }}
-      transition={{ duration: 0.75, delay: 0.45 }}
-    >
+    <motion.div>
       <Card shadow="sm" radius="sm">
         <CardHeader className="flex justify-between items-center">
           <div className="font-bold text-xl">

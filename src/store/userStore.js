@@ -12,9 +12,9 @@ const useUserStore = create((set) => ({
     }
   },
 
-  getUserByEmail: async (email) => {
+  getUserById: async (id) => {
     try {
-      const res = await api.get(`/user/${email}`);
+      const res = await api.get(`/user/${id}`);
       return res.data;
     } catch (error) {
       throw error.response.data;
