@@ -1,54 +1,138 @@
 import React, { useEffect } from "react";
-import WorkCard from "../../../components/workCard";
 import useWorkStore from "../../../store/workStore";
-import { useSearchParams } from "react-router-dom";
-import SkeletonCard from "../../../components/skeletonCard";
+import { useLocation, useSearchParams } from "react-router-dom";
 import dayjs from "dayjs";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  CircularProgress,
+  Avatar,
+} from "@nextui-org/react";
+import { calulateWorkProgress } from "../../../utils/work";
+import relativetime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativetime);
+
+dayjs.locale("vi");
 
 const PAGE_SIZE = 500;
 
 const DeadLine = () => {
-  const [searchParams] = useSearchParams();
+  let { getListWorks } = useWorkStore((state) => state);
 
-  let { listWorks, getListWorks, loading } = useWorkStore((state) => state);
+  const pathName = useLocation().pathname;
+  const [loading, setLoading] = React.useState(true);
 
+  const [works, setWorks] = React.useState([]);
+
+  const threeDaysFromNow = dayjs().add(3, "day");
+
+  const pathNameMap = {
+    "/deadline": "trễ hạn",
+    "/deadline/upcoming": "gần tới hạn",
+  };
   useEffect(() => {
-    getListWorks(Number(searchParams.get("page") || 1), PAGE_SIZE);
-
-    window.scrollTo(0, 0);
-  }, [searchParams.get("page")]);
-
+    setLoading(true);
+    (async () => {
+      const data = await getListWorks(1, PAGE_SIZE);
+      switch (pathName) {
+        case "/deadline":
+          setWorks(
+            data.data.filter(
+              (w) => dayjs() > dayjs(w.endTime) && w.status !== "COMPLETED"
+            )
+          );
+          break;
+        case "/deadline/upcoming":
+          setWorks(
+            data.data.filter(
+              (w) =>
+                dayjs(w.endTime).isBefore(threeDaysFromNow) &&
+                dayjs(w.endTime).isAfter(dayjs()) &&
+                w.status !== "COMPLETED"
+            )
+          );
+          break;
+        default:
+          break;
+      }
+      setLoading(false);
+    })();
+  }, [pathName]);
+  if (loading) {
+    return (
+      <div className="w-full h-[50vh] items-center flex flex-col justify-center">
+        <CircularProgress />
+      </div>
+    );
+  }
   return (
-    <div className=" flex flex-col items-center lg:mx-28 mx-6 min-h-screen pb-20 bg-background overflow-x-hidden">
-      <div className="lg:pt-24 pt-8 w-full ">
-        <div className="w-full flex flex-col gap-8 xl:flex-row">
-          <div className="w-full xl:w-8/12 px-2">
-            <h1 className="text-2xl font-bold">Công việc trễ hạn</h1>
-            {loading ? (
-              <div className="flex  items-center w-full flex-col">
-                {Array.from({ length: PAGE_SIZE }).map((_, index) => (
-                  <SkeletonCard key={index} />
-                ))}
-              </div>
-            ) : listWorks.data.length > 0 ? (
-              <div>
-                {listWorks.data
-                  .filter(
-                    (work) =>
-                      dayjs(work.endTime) < dayjs() &&
-                      work.status !== "COMPLETED"
-                  )
-                  .map((work, index) => (
-                    <WorkCard key={index} work={work} index={index} />
-                  ))}
-              </div>
+    <div className="w-full px-2">
+      <h1 className="text-2xl font-bold">
+        {`Công việc ${pathNameMap[pathName]}`}
+      </h1>
+      <div className="flex flex-col gap-8 mt-4">
+        <Table aria-label="Example static collection table" radius="none">
+          <TableHeader>
+            <TableColumn>Avatar</TableColumn>
+            <TableColumn>Bởi</TableColumn>
+            <TableColumn>Công việc</TableColumn>
+            <TableColumn>Tiên độ</TableColumn>
+            <TableColumn>Bắt đầu</TableColumn>
+            <TableColumn>Thời hạn</TableColumn>
+            {pathName === "/deadline" ? (
+              <TableColumn>Trễ hạn</TableColumn>
             ) : (
-              <div>
-                <h1 className="text-2xl font-bold">Chưa có công việc</h1>
-              </div>
+              <TableColumn>Trong</TableColumn>
             )}
-          </div>
-        </div>
+          </TableHeader>
+          <TableBody>
+            {works.map((w, index) => {
+              const workProgess = () => calulateWorkProgress(w);
+              return (
+                <TableRow key={index}>
+                  <TableCell>
+                    <Avatar isBordered />
+                  </TableCell>
+                  <TableCell>{w.createdBy.name}</TableCell>
+                  <TableCell>{w.title}</TableCell>
+                  <TableCell>
+                    <CircularProgress
+                      aria-label="progress..."
+                      size="md"
+                      value={workProgess()}
+                      color="success"
+                      showValueLabel={true}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    {dayjs(w.startTime).format("DD/MM/YYYY HH:mm")}
+                  </TableCell>
+                  <TableCell>
+                    {dayjs(w.endTime).format("DD/MM/YYYY HH:mm")}
+                  </TableCell>
+                  {pathName === "/deadline" ? (
+                    <TableCell>
+                      <span className="text-danger-400">
+                        {" "}
+                        Trễ hạn: {dayjs().to(dayjs(w.endTime))}
+                      </span>
+                    </TableCell>
+                  ) : (
+                    <TableCell>
+                      <span className="text-success-400">
+                        {dayjs().to(dayjs(w.endTime))}
+                      </span>
+                    </TableCell>
+                  )}
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );

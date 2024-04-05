@@ -3,8 +3,9 @@ import { Listbox, ListboxSection, ListboxItem } from "@nextui-org/react";
 import { Card, CardHeader, CardBody, Divider, Avatar } from "@nextui-org/react";
 import { Eye, Pencil, Trash2, PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 function Menu() {
+  const pathName = useLocation().pathname;
   return (
     <div
       className="w-full xl:w-4/12 mt-[44px]"
@@ -21,7 +22,16 @@ function Menu() {
         <CardBody>
           <Listbox aria-label="Actions">
             <ListboxSection title="Tổng quan" showDivider>
-              <ListboxItem key="list" to="/users" as={Link}>
+              <ListboxItem
+                key="list"
+                to="/users"
+                as={Link}
+                className={
+                  pathName === "/users"
+                    ? "bg-[#006FEE] text-primary-foreground"
+                    : ""
+                }
+              >
                 Tất cả các nhân sự
               </ListboxItem>
               <ListboxItem key="copy">Thống kê chỉ số</ListboxItem>

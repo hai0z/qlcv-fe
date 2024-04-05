@@ -51,3 +51,23 @@ html {
   border-color: transparent !important;
   margin-left: 10px !important;
 }
+
+.ag-theme-material {
+  --ag-material-primary-color: oklch(var(--p)) !important;
+  --ag-font-size: 17px !important;
+}
+.ag-theme-alpine-dark {
+  --ag-font-size: 17px !important;
+}
+.ag-row .ag-cell {
+  display: flex;
+  align-items: center;
+}
+.ag-cell-focus,
+.ag-cell-no-focus {
+  border: none !important;
+}
+.no-border.ag-cell:focus {
+  border: none !important;
+  outline: none;
+}

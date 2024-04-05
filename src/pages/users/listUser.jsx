@@ -1,21 +1,13 @@
 import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  User,
-  Chip,
-  Tooltip,
-  getKeyValue,
   Card,
-  CardHeader,
-  CardBody,
-  Divider,
   Avatar,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Button,
 } from "@nextui-org/react";
-import { Eye, Pencil, Trash2, PlusCircle } from "lucide-react";
+import { Eye, Pencil, Trash2, PlusCircle, MoreVertical } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import toast from "react-hot-toast";
@@ -24,37 +16,30 @@ import useWorkStore from "../../store/workStore";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../store/userStore";
 import { Listbox, ListboxSection, ListboxItem } from "@nextui-org/react";
-
+import { AgGridReact } from "ag-grid-react"; // AG Grid Component
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
+import "ag-grid-community/styles/ag-theme-material.css";
+import { useTheme } from "next-themes"; // Optional Theme applied to the grid
 function listUsersPage() {
   const navigate = useNavigate();
-  const [work, setWork] = useState({
-    title: "",
-    description: "",
-    startTime: new Date(),
-    endTime: new Date(),
-  });
 
+  //get theme from next theme
+  const { theme } = useTheme();
   const [implementer, setImplementer] = useState([]);
 
-  const { getListUsers, listUsers } = useUserStore((state) => state);
+  const { getListUsers } = useUserStore((state) => state);
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [listUsers, setListUser] = useState([]);
 
   useEffect(() => {
     (async () => {
       const users = await getListUsers();
-      setFilteredUsers(users);
+      setListUser(users);
     })();
   }, []);
-  const columns = [
-    { name: "Email", uid: "email" },
-    { name: "Tên người dùng", uid: "name" },
-    { name: "Chức vụ", uid: "role" },
-    { name: "Địa chỉ", uid: "address" },
-    { name: "Hành động", uid: "actions" },
-  ];
+
   const handleSelectUser = (e) => {
     if (e.target.checked) {
       setImplementer([...implementer, e.target.value]);
@@ -64,64 +49,50 @@ function listUsersPage() {
       );
     }
   };
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-    setFilteredUsers(
-      listUsers.filter((user) =>
-        user.name.toLowerCase().includes(e.target.value.toLowerCase())
-      )
-    );
-  };
-  const renderCell = React.useCallback((user, columnKey) => {
-    const cellValue = user[columnKey];
 
-    switch (columnKey) {
-      case "email":
-        return (
-          <User
-            avatarProps={{ radius: "lg", src: user.avatar }}
-            description={user.email}
-            name={cellValue}
-          >
-            {user.email}
-          </User>
-        );
-      case "name":
-        return <p className="text-bold text-sm capitalize">{cellValue}</p>;
-      case "role":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-sm capitalize">{cellValue}</p>
-            <p className="text-bold text-sm capitalize text-default-400">
-              {user.team}
-            </p>
-          </div>
-        );
-
-      case "actions":
-        return (
-          <div className="relative flex items-center gap-6">
-            <Tooltip content="Details">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <Eye />
-              </span>
-            </Tooltip>
-            <Tooltip content="Edit user">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <Pencil />
-              </span>
-            </Tooltip>
-            <Tooltip color="danger" content="Delete user">
-              <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                <Trash2 />
-              </span>
-            </Tooltip>
-          </div>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
+  const [colDefs, setColDefs] = useState([
+    {
+      field: "avatar",
+      headerName: "Ảnh đại diện",
+      cellRenderer: (params) => (
+        <div className="w-full h-full  items-center flex">
+          <Avatar src={params.value} size="lg" color="default" isBordered />
+        </div>
+      ),
+    },
+    { field: "email", headerName: "Email", floatingFilter: true },
+    { field: "name", headerName: "Họ và tên", floatingFilter: true },
+    { field: "address", headerName: "Địa chỉ", floatingFilter: true },
+    {
+      field: "role",
+      headerName: "Vai trò",
+      cellRenderer: (params) => (
+        <div className="capitalize">
+          {params.value === "ADMIN" ? "Người quản trị" : "Người dùng"}
+        </div>
+      ),
+    },
+    {
+      field: "email",
+      headerName: "Hành động",
+      cellRenderer: (params) => (
+        <div className="relative flex justify-start items-center gap-2 h-full">
+          <Dropdown>
+            <DropdownTrigger>
+              <Button isIconOnly size="sm" variant="light">
+                <MoreVertical className="text-default-300" />
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu>
+              <DropdownItem>Xem thông tin</DropdownItem>
+              <DropdownItem>Sửa</DropdownItem>
+              <DropdownItem>Xoá</DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </div>
+      ),
+    },
+  ]);
 
   return (
     <div className="w-full flex flex-col gap-8 xl:flex-row">
@@ -133,31 +104,35 @@ function listUsersPage() {
         transition={{ duration: 0.3 }}
       >
         <h2 className="font-bold text-lg">Danh sách nhân sự</h2>
-        <Table
-          aria-label="Example table with custom cells"
-          className="mt-4"
+        <Card
           radius="none"
+          className={`${
+            theme === "light" ? "ag-theme-material" : "ag-theme-material-dark"
+          } mt-4 h-screen`}
+          // style={{ height: 650 }}
         >
-          <TableHeader columns={columns}>
-            {(column) => (
-              <TableColumn
-                key={column.uid}
-                align={column.uid === "actions" ? "center" : "start"}
-              >
-                {column.name}
-              </TableColumn>
-            )}
-          </TableHeader>
-          <TableBody items={listUsers}>
-            {(item) => (
-              <TableRow key={item.id}>
-                {(columnKey) => (
-                  <TableCell>{renderCell(item, columnKey)}</TableCell>
-                )}
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+          <AgGridReact
+            defaultColDef={{
+              flex: 1,
+              sortable: true,
+              resizable: true,
+              filter: true,
+              filterParams: {
+                debounceMs: 0,
+              },
+            }}
+            rowData={listUsers}
+            columnDefs={colDefs}
+            paginationPageSize={10}
+            gridOptions={{
+              rowHeight: 80,
+              pagination: true,
+              onGridReady: (params) => {
+                params.api.sizeColumnsToFit();
+              },
+            }}
+          />
+        </Card>
       </div>
     </div>
   );

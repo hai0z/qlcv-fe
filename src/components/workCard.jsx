@@ -61,7 +61,7 @@ export default function WorkCard({ work, index }) {
         onPress={() => {
           navigate(`/work-info/${work.id}`);
         }}
-        className="w-full my-8"
+        className="w-full"
         classNames={{
           base: "poiter",
         }}

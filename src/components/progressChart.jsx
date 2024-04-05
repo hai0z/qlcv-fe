@@ -20,7 +20,7 @@ export default function ProgressChart({ chartData }) {
       exit={{ opacity: 0, translateX: 200 }}
       transition={{ duration: 0.75, delay: 0.25 }}
     >
-      <Card className="xl:mt-16 rounded-s-md flex flex-col p-6" shadow="sm">
+      <Card className="rounded-s-md flex flex-col p-6" shadow="sm">
         <CardHeader>
           <span className="font-bold">Tiến độ công việc</span>
         </CardHeader>

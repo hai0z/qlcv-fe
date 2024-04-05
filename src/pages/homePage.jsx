@@ -8,7 +8,7 @@ import Notification from "../components/notification";
 import useNotificationStore from "../store/notificationStore";
 import { useSearchParams } from "react-router-dom";
 import SkeletonCard from "../components/skeletonCard";
-
+import { Tab, Tabs } from "@nextui-org/react";
 const PAGE_SIZE = 5;
 
 const HomePage = () => {
@@ -43,7 +43,7 @@ const HomePage = () => {
                 ))}
               </div>
             ) : listWorks.data.length > 0 ? (
-              <div>
+              <div className="flex flex-col gap-8 mt-8">
                 {listWorks.data.map((work, index) => (
                   <WorkCard key={index} work={work} index={index} />
                 ))}
@@ -53,7 +53,7 @@ const HomePage = () => {
                 <h1 className="text-2xl font-bold">Chưa có công việc</h1>
               </div>
             )}
-            <div className="flex justify-end flex-row w-full">
+            <div className="flex justify-end flex-row w-full mt-4">
               {listWorks.data.length > 0 && (
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -69,9 +69,33 @@ const HomePage = () => {
               )}
             </div>
           </div>
-          <div className="w-full xl:w-4/12 px-2">
-            {progressChart && <ProgressChart chartData={progressChart} />}
-            {notifications.length > 0 && <Notification data={notifications} />}
+          <div className="w-full xl:w-4/12 px-2 xl:mt-16">
+            <Tabs
+              aria-label="Options"
+              radius="none"
+              className="mx-1"
+              color="primary"
+            >
+              <Tab key="overview" title="Thống kê">
+                {progressChart && <ProgressChart chartData={progressChart} />}
+              </Tab>
+              <Tab
+                key="activity"
+                title={
+                  notifications.filter((item) => item.isRead === false).length >
+                  0
+                    ? `Thông báo ${
+                        notifications.filter((item) => item.isRead === false)
+                          .length
+                      }`
+                    : "Thông báo"
+                }
+              >
+                {notifications.length > 0 && (
+                  <Notification data={notifications} />
+                )}
+              </Tab>
+            </Tabs>
           </div>
         </div>
       </div>

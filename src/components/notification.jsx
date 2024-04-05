@@ -31,7 +31,7 @@ export default function Notification({ data }) {
       exit={{ opacity: 0, translateX: 200 }}
       transition={{ duration: 0.75, delay: 0.45 }}
     >
-      <Card shadow="sm" radius="sm" className="mt-8">
+      <Card shadow="sm" radius="sm">
         <CardHeader className="flex justify-between items-center">
           <div className="font-bold text-xl">
             Thông báo gần đây{" "}

@@ -130,7 +130,10 @@ function WorkInfoPage() {
                   <span>Mô tả chi tiết</span>
                 </div>
                 <div className="mt-4 px-4 prose ">
-                  {parse(work.description)}
+                  <span className="text-foreground">
+                    {" "}
+                    {parse(work.description)}
+                  </span>
                 </div>
               </CardBody>
             </Card>

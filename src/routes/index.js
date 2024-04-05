@@ -14,6 +14,7 @@ import Menu from "../pages/users/components/Menu";
 import WorkStatusMenu from "../pages/works/work-status/components/workStatusMenu";
 import AddUser from "../pages/users/addUser";
 import WorkStatusPage from "../pages/works/work-status";
+import DeadLineMenu from "../pages/works/deadline/components/Menu";
 const RootLayout = () => {
   return (
     <AuthProvider>
@@ -65,6 +66,26 @@ const UserLayout = () => {
     </div>
   );
 };
+const DeadLineLayout = () => {
+  return (
+    <div className="mx-6 lg:mx-28 bg-background min-h-screen pb-16">
+      <div className="lg:pt-24 pt-8 w-full h-full">
+        <div className="w-full flex flex-col gap-8 xl:flex-row">
+          <DeadLineMenu />
+          <div
+            className="w-full xl:w-8/12"
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -100 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Outlet />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -95,10 +116,6 @@ export const router = createBrowserRouter([
             element: <WorkStatusPage />,
           },
           {
-            path: "/work-status/deadline",
-            element: <WorkStatusPage />,
-          },
-          {
             path: "/work-status/new",
             element: <WorkStatusPage />,
           },
@@ -122,7 +139,17 @@ export const router = createBrowserRouter([
       },
       {
         path: "/deadline",
-        element: <DeadLine />,
+        element: <DeadLineLayout />,
+        children: [
+          {
+            path: "/deadline",
+            element: <DeadLine />,
+          },
+          {
+            path: "/deadline/upcoming",
+            element: <DeadLine />,
+          },
+        ],
       },
       {
         path: "/users",

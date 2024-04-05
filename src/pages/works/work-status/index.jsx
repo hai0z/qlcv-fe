@@ -1,16 +1,27 @@
-import { Card, CardBody } from "@nextui-org/react";
+import { Avatar, Card, CardBody } from "@nextui-org/react";
 import React, { useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import useWorkStore from "../../../store/workStore";
 import WorkCard from "../../../components/workCard";
 import dayjs from "dayjs";
-
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  CircularProgress,
+} from "@nextui-org/react";
+import { calulateWorkProgress } from "../../../utils/work";
 function WorkStatusPage() {
   const pathName = useLocation().pathname;
-
+  const [loading, setLoading] = React.useState(true);
   const [works, setWorks] = React.useState([]);
   const { getListWorks } = useWorkStore((state) => state);
+  const navigation = useNavigate();
   useEffect(() => {
+    setLoading(true);
     (async () => {
       const data = await getListWorks(1, 500);
       switch (pathName) {
@@ -39,6 +50,7 @@ function WorkStatusPage() {
         default:
           break;
       }
+      setLoading(false);
     })();
   }, [pathName]);
 
@@ -51,6 +63,21 @@ function WorkStatusPage() {
     "/work-status/new": "mới",
   };
 
+  const workStatus = {
+    IN_PROGRESS: "đang thực hiện",
+    COMPLETED: "đã hoàn thành",
+    PAUSE: "đã tạm dừng",
+    PENDING: "chọn duyệt",
+    NEW: "Mới",
+  };
+
+  if (loading) {
+    return (
+      <div className="w-full flex justify-center items-center h-[50vh]">
+        <CircularProgress size="md" color="primary" css={{ margin: "auto" }} />
+      </div>
+    );
+  }
   return (
     <div className="w-full flex flex-col gap-8 xl:flex-row">
       <div
@@ -61,10 +88,56 @@ function WorkStatusPage() {
         transition={{ duration: 0.3 }}
       >
         <h2 className="font-bold text-lg">Công việc {pathNameMap[pathName]}</h2>
-        <div className="mt-4" radius="none">
-          {works?.map((work) => {
-            return <WorkCard work={work} />;
-          })}
+        <div className="flex flex-col mt-4 gap-8">
+          <Table
+            aria-label="Example static collection table"
+            radius="none"
+            selectionMode="single"
+          >
+            <TableHeader>
+              <TableColumn>Avatar</TableColumn>
+              <TableColumn>Bởi</TableColumn>
+              <TableColumn>Công việc</TableColumn>
+              <TableColumn>Trạng thái</TableColumn>
+              <TableColumn>Tiên độ</TableColumn>
+              <TableColumn>Bắt đầu</TableColumn>
+              <TableColumn>Thời hạn</TableColumn>
+            </TableHeader>
+            <TableBody>
+              {works.map((w, index) => {
+                const workProgess = () => calulateWorkProgress(w);
+                return (
+                  <TableRow
+                    key={index}
+                    className="cursor-pointer"
+                    onClick={() => navigation("/work-info/" + w.id)}
+                  >
+                    <TableCell>
+                      <Avatar isBordered />
+                    </TableCell>
+                    <TableCell>{w.createdBy.name}</TableCell>
+                    <TableCell>{w.title}</TableCell>
+                    <TableCell>{workStatus[w.status]}</TableCell>
+                    <TableCell>
+                      <CircularProgress
+                        aria-label="progress..."
+                        size="md"
+                        value={workProgess()}
+                        color="success"
+                        showValueLabel={true}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      {dayjs(w.startTime).format("DD/MM/YYYY HH:mm")}
+                    </TableCell>
+                    <TableCell>
+                      {dayjs(w.endTime).format("DD/MM/YYYY HH:mm")}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
         </div>
       </div>
     </div>
