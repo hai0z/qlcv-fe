@@ -12,7 +12,7 @@ import {
   Textarea,
 } from "@nextui-org/react";
 import { FileText, SendHorizontal } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import toast from "react-hot-toast";
@@ -20,14 +20,13 @@ import dayjs from "dayjs";
 import useWorkStore from "../../../store/workStore";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../../store/userStore";
+import { AuthContext } from "../../../context/authProvider";
+import * as yup from "yup";
+import { useFormik } from "formik";
 function AddWorkPage() {
   const navigate = useNavigate();
-  const [work, setWork] = useState({
-    title: "",
-    description: "",
-    startTime: new Date(),
-    endTime: new Date(),
-  });
+
+  const { auth } = useContext(AuthContext);
 
   const { createWork, addMemberToWork } = useWorkStore((state) => state);
 
@@ -39,21 +38,40 @@ function AddWorkPage() {
 
   const [filteredUsers, setFilteredUsers] = useState([]);
 
+  const [startTime, setStartTime] = useState(dayjs());
+
+  const [endTime, setEndTime] = useState(dayjs().add(1, "day"));
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      description: "",
+      startTime: dayjs(),
+      endTime: dayjs().add(1, "day"),
+    },
+    validationSchema: yup.object({
+      title: yup.string().required("Vui lòng nhập mô tả"),
+      description: yup.string(),
+    }),
+    onSubmit: async (values) => {
+      const workId = await createWork(values);
+      for (let i = 0; i < implementer.length; i++) {
+        await addMemberToWork(workId, implementer[i]);
+      }
+      toast.success("Thêm công việc thành công");
+      navigate("/work-info/" + workId);
+    },
+  });
+
   useEffect(() => {
     (async () => {
       const users = await getListUsers();
-      setFilteredUsers(users);
+      if (auth.role === "ADMIN") {
+        setFilteredUsers(users);
+      } else {
+        setFilteredUsers(users.filter((user) => user.id === auth.id));
+      }
     })();
   }, []);
-
-  const addWork = async () => {
-    const workId = await createWork(work);
-    for (let i = 0; i < implementer.length; i++) {
-      await addMemberToWork(workId, implementer[i]);
-    }
-    toast.success("Thêm công  việc thành công");
-    navigate("/work-info/" + workId);
-  };
 
   const handleSelectUser = (e) => {
     if (e.target.checked) {
@@ -76,13 +94,7 @@ function AddWorkPage() {
     <div className="mx-6 lg:mx-28 bg-background min-h-screen pb-16">
       <div className="lg:pt-24 pt-8 w-full h-full">
         <div className="w-full flex flex-col gap-8 xl:flex-row">
-          <div
-            className="w-full xl:w-8/12"
-            initial={{ opacity: 0, x: -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
-            transition={{ duration: 0.3 }}
-          >
+          <form>
             <h2 className="font-bold text-lg">Thêm công việc</h2>
             <Card className="mt-4" radius="none" shadow="sm">
               <CardHeader>
@@ -102,17 +114,18 @@ function AddWorkPage() {
                     <span className="text-danger text-small">(*)</span>
                   </h4>
                   <Textarea
-                    value={work.title}
-                    onChange={(e) => {
-                      setWork({
-                        ...work,
-                        title: e.target.value,
-                      });
-                    }}
+                    value={formik.values.title}
+                    onChange={formik.handleChange}
+                    name="title"
                     radius="none"
                     className="mt-4"
                     placeholder="Mô tả ngắn..."
                   />
+                  {formik.errors.title && formik.touched.title && (
+                    <p className="text-danger text-small">
+                      {formik.errors.title}
+                    </p>
+                  )}
                   <Accordion>
                     <AccordionItem
                       ari-aria-label="Mô tả chi tiết"
@@ -122,12 +135,9 @@ function AddWorkPage() {
                     >
                       <ReactQuill
                         theme="snow"
-                        value={work.description}
+                        value={formik.values.description}
                         onChange={(e) => {
-                          setWork({
-                            ...work,
-                            description: e,
-                          });
+                          formik.setFieldValue("description", e);
                         }}
                       />
                     </AccordionItem>
@@ -138,25 +148,23 @@ function AddWorkPage() {
                   <div className="flex flex-col">
                     <span className="text-small">Thời gian thực hiện từ</span>
                     <input
+                      required
+                      value={dayjs(startTime).format("YYYY-MM-DDTHH:mm")}
                       onChange={(e) => {
-                        setWork({
-                          ...work,
-                          startTime: new Date(e.target.value),
-                        });
+                        setStartTime(new Date(e.target.value));
                       }}
                       type="datetime-local"
-                      placeholder=""
+                      placeholder="sdfasd"
                       className="w-[450px] py-2 border rounded-md mt-2 px-2"
                     />
                   </div>
                   <div className="flex flex-col">
                     <span className="text-small">Thời hạn đến</span>
                     <input
+                      required
+                      value={dayjs(endTime).format("YYYY-MM-DDTHH:mm")}
                       onChange={(e) => {
-                        setWork({
-                          ...work,
-                          endTime: new Date(e.target.value),
-                        });
+                        setEndTime(new Date(e.target.value));
                       }}
                       type="datetime-local"
                       placeholder=""
@@ -166,14 +174,8 @@ function AddWorkPage() {
                 </div>
               </CardBody>
             </Card>
-          </div>
-          <div
-            className="w-full xl:w-4/12 mt-[44px]"
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 100 }}
-            transition={{ duration: 0.3, delay: 0.25 }}
-          >
+          </form>
+          <div className="w-full xl:w-4/12 mt-[44px]">
             <Card radius="none" shadow="sm">
               <CardHeader>
                 <div className="flex flex-col">
@@ -221,7 +223,7 @@ function AddWorkPage() {
             </Card>
             <Button
               isDisabled={implementer.length === 0}
-              onPress={addWork}
+              onPress={formik.handleSubmit}
               radius="none"
               color="warning"
               className="mt-4"

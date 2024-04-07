@@ -34,8 +34,8 @@ export default function WorkCard({ work, index }) {
     for (let i = 0; i < work.implementer.length; i++) {
       for (let j = 0; j < work.implementer[i].request.length; j++) {
         if (
-          new Date(work.implementer[i].request[j].createdAt) >
-          new Date(latestWorkRequest.createdAt)
+          new Date(work.implementer[i].request[j]?.createdAt) >
+          new Date(latestWorkRequest?.createdAt)
         ) {
           latestWorkRequest = work.implementer[i].request[j];
         }
@@ -122,7 +122,7 @@ export default function WorkCard({ work, index }) {
             <div className="flex flex-row justify-between items-center">
               <p className="mt-4 ">
                 Tạo lúc:{" "}
-                {dayjs(work.createdAt).format("HH:mm:ss, dddd, DD/MM/YYYY  ")}
+                {dayjs(work?.createdAt).format("HH:mm:ss, dddd, DD/MM/YYYY  ")}
               </p>
               <AvatarGroup isBordered max={3}>
                 {work.implementer.map((implementer) => (
@@ -168,7 +168,7 @@ export default function WorkCard({ work, index }) {
                   </div>
                   <span className="ml-auto text-tiny text-foreground">
                     Bởi: {getLatestComment?.createdBy.name} |{" "}
-                    {dayjs().to(dayjs(getLatestComment.createdAt))}
+                    {dayjs().to(dayjs(getLatestComment?.createdAt))}
                   </span>
                 </div>
               )}

@@ -1,7 +1,7 @@
 import { Outlet, createBrowserRouter } from "react-router-dom";
 import Nav from "../components/navbar";
 import HomePage from "../pages/homePage";
-import AuthProvider from "../context/authProvider";
+import AuthProvider, { AuthContext } from "../context/authProvider";
 import Login from "../pages/login";
 import CalenderPage from "../pages/calender/calenderPage";
 import WorkInfoPage from "../pages/works/work-info/workInfoPage";
@@ -16,6 +16,9 @@ import AddUser from "../pages/users/addUser";
 import WorkStatusPage from "../pages/works/work-status";
 import DeadLineMenu from "../pages/works/deadline/components/Menu";
 import Profile from "../pages/users/profile";
+import Stats from "../pages/users/stats";
+import { useContext } from "react";
+import EditUserPage from "../pages/users/EditUserPage";
 const RootLayout = () => {
   return (
     <AuthProvider>
@@ -49,11 +52,12 @@ const WorkStatusLayout = () => {
 };
 
 const UserLayout = () => {
+  const { auth } = useContext(AuthContext);
   return (
     <div className="mx-6 lg:mx-28 bg-background min-h-screen pb-16">
       <div className="lg:pt-24 pt-8 w-full h-full">
         <div className="w-full flex flex-col gap-8 xl:flex-row">
-          <Menu />
+          {auth.role === "ADMIN" ? <Menu /> : null}
           <div
             className="w-full xl:w-8/12"
             initial={{ opacity: 0, x: -100 }}
@@ -167,6 +171,14 @@ export const router = createBrowserRouter([
             path: "/users/add-user",
             element: <AddUser />,
           },
+          {
+            path: "/users/stats",
+            element: <Stats />,
+          },
+          {
+            path: "/users/edit/:userId",
+            element: <EditUserPage />,
+          },
         ],
       },
       {
@@ -183,6 +195,7 @@ export const router = createBrowserRouter([
     path: "/login",
     element: (
       <AuthProvider>
+        <Toaster />
         <Login />
       </AuthProvider>
     ),

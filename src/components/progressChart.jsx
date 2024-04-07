@@ -26,6 +26,11 @@ export default function ProgressChart({ chartData }) {
             options={{
               chart: {
                 type: "pie",
+                events: {
+                  legendClick: function (chartContext, seriesIndex, config) {
+                    console.log(seriesIndex);
+                  },
+                },
               },
               labels: [
                 "Đã hoàn thành",
@@ -43,9 +48,15 @@ export default function ProgressChart({ chartData }) {
                 labels: {
                   useSeriesColors: true,
                 },
-                fontSize: "11px",
+                fontSize: "12px",
               },
-              colors: ["#17c964", "#f31260", "#f5a524", "#7828c8", "#006FEE"],
+              colors: [
+                "hsl(var(--nextui-success))",
+                "hsl(var(--nextui-danger))",
+                "hsl(var(--nextui-warning))",
+                "hsl(var(--nextui-secondary))",
+                "hsl(var(--nextui-primary))",
+              ],
               responsive: [
                 {
                   breakpoint: 480,

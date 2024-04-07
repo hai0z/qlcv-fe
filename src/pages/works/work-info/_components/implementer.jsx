@@ -22,10 +22,10 @@ import dayjs from "dayjs";
 import "dayjs/locale/vi";
 import relativetime from "dayjs/plugin/relativeTime";
 import { CheckSquare, Eye, MoreVertical, Plus } from "lucide-react";
-import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
 import toast from "react-hot-toast";
 import useWorkStore from "../../../../store/workStore";
+import { AuthContext } from "../../../../context/authProvider";
 dayjs.extend(relativetime);
 dayjs.locale("vi");
 
@@ -44,6 +44,8 @@ function Implementer() {
   const [selectedImplementer, setSelectedImplementer] = React.useState({});
 
   const [workRequestTitle, setWorkRequestTitle] = React.useState("");
+
+  const { auth } = useContext(AuthContext);
 
   const addWorkRequest = async () => {
     toast.promise(
@@ -101,8 +103,7 @@ function Implementer() {
       });
   };
   const handleRemoveImplementer = async (implementerId) => {
-    alert(implementerId);
-    const option = confirm("Bạn muốn xóa người liệu này?");
+    const option = confirm("Bạn muốn xóa người này khỏi công việc hiện tại?");
     option &&
       toast.promise(removeMemberFromWork(work.id, implementerId), {
         loading: "Đang xóa...",
@@ -138,16 +139,18 @@ function Implementer() {
                     <PopoverContent>
                       <Listbox aria-label="Actions">
                         <ListboxItem key="new">Xem thông tin</ListboxItem>
-                        <ListboxItem
-                          key="delete"
-                          className="text-danger"
-                          color="danger"
-                          onClick={() =>
-                            handleRemoveImplementer(implementer.user.id)
-                          }
-                        >
-                          Xoá khỏi công việc
-                        </ListboxItem>
+                        {auth.role === "ADMIN" && (
+                          <ListboxItem
+                            key="delete"
+                            className="text-danger"
+                            color="danger"
+                            onClick={() =>
+                              handleRemoveImplementer(implementer.user.id)
+                            }
+                          >
+                            Xoá khỏi công việc
+                          </ListboxItem>
+                        )}
                       </Listbox>
                     </PopoverContent>
                   </Popover>
@@ -162,19 +165,21 @@ function Implementer() {
                 </div>
               </div>
               <div className="ml-auto">
-                <Button
-                  onPress={() => {
-                    onOpen();
-                    setSelectedImplementer({
-                      user: implementer.user.id,
-                      implementerId: implementer.id,
-                    });
-                  }}
-                  size="sm"
-                  startContent={<CheckSquare size={13} />}
-                >
-                  Thêm yêu cầu
-                </Button>
+                {auth.role === "ADMIN" || auth.id === implementer.user.id ? (
+                  <Button
+                    onPress={() => {
+                      onOpen();
+                      setSelectedImplementer({
+                        user: implementer.user.id,
+                        implementerId: implementer.id,
+                      });
+                    }}
+                    size="sm"
+                    startContent={<CheckSquare size={13} />}
+                  >
+                    Thêm yêu cầu
+                  </Button>
+                ) : null}
               </div>
             </div>
             <Divider className="my-6" />
@@ -187,7 +192,7 @@ function Implementer() {
                         updateCheckList(request.id, !request.isCompleted)
                       }
                       size="lg"
-                      color="warning"
+                      color="success"
                       radius="none"
                       isSelected={request.isCompleted}
                       value={request.isCompleted}

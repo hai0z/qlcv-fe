@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import useWorkStore from "../../../store/workStore";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import dayjs from "dayjs";
 import {
   Table,
@@ -62,6 +62,8 @@ const DeadLine = () => {
       setLoading(false);
     })();
   }, [pathName]);
+
+  const navigation = useNavigate();
   if (loading) {
     return (
       <div className="w-full h-[50vh] items-center flex flex-col justify-center">
@@ -75,7 +77,11 @@ const DeadLine = () => {
         {`Công việc ${pathNameMap[pathName]}`}
       </h1>
       <div className="flex flex-col gap-8 mt-4">
-        <Table aria-label="Example static collection table" radius="none">
+        <Table
+          aria-label="Example static collection table"
+          radius="none"
+          selectionMode="single"
+        >
           <TableHeader>
             <TableColumn>Avatar</TableColumn>
             <TableColumn>Bởi</TableColumn>
@@ -93,9 +99,15 @@ const DeadLine = () => {
             {works.map((w, index) => {
               const workProgess = () => calulateWorkProgress(w);
               return (
-                <TableRow key={index}>
+                <TableRow
+                  key={index}
+                  className="cursor-pointer"
+                  onClick={() => {
+                    navigation(`/work-info/${w.id}`);
+                  }}
+                >
                   <TableCell>
-                    <Avatar isBordered />
+                    <Avatar isBordered src={w.createdBy.avatar} />
                   </TableCell>
                   <TableCell>{w.createdBy.name}</TableCell>
                   <TableCell>{w.title}</TableCell>

@@ -68,7 +68,6 @@ export default function AddMemberToWorkModal() {
     getWorkById(work.id);
     onOpenChange(false);
   };
-  console.log(users);
   return (
     <>
       <div className="flex flex-row justify-between items-center mt-4">

@@ -79,12 +79,7 @@ const HomePage = () => {
             </div>
           </div>
           <div className="w-full xl:w-4/12 px-2 xl:mt-16">
-            <Tabs
-              aria-label="Options"
-              radius="none"
-              className="mx-1"
-              color="primary"
-            >
+            <Tabs aria-label="Options" radius="md" className="mx-1">
               <Tab key="overview" title="Thống kê">
                 {progressChart && <ProgressChart chartData={progressChart} />}
               </Tab>

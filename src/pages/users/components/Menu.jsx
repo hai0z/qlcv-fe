@@ -23,18 +23,29 @@ function Menu() {
           <Listbox aria-label="Actions">
             <ListboxSection title="Tổng quan" showDivider>
               <ListboxItem
-                key="list"
+                key="overview"
                 to="/users"
                 as={Link}
                 className={
                   pathName === "/users"
-                    ? "bg-[#006FEE] text-primary-foreground"
-                    : ""
+                    ? "bg-[#006FEE] text-primary-foreground mb-1"
+                    : "mb-1"
                 }
               >
                 Tất cả các nhân sự
               </ListboxItem>
-              <ListboxItem key="copy">Thống kê chỉ số</ListboxItem>
+              <ListboxItem
+                key="stats"
+                as={Link}
+                to="/users/stats"
+                className={
+                  pathName === "/users/stats"
+                    ? "bg-[#006FEE] text-primary-foreground"
+                    : ""
+                }
+              >
+                Thống kê chỉ số
+              </ListboxItem>
             </ListboxSection>
             <ListboxSection title="Hành động">
               <ListboxItem

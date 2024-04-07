@@ -1,7 +1,8 @@
 import { createContext, useEffect, useState } from "react";
 import api from "../api/config";
 import { useNavigate } from "react-router-dom";
-
+import useUserStore from "../store/userStore";
+import toast from "react-hot-toast";
 export const AuthContext = createContext({});
 
 const AuthProvider = ({ children }) => {
@@ -11,6 +12,7 @@ const AuthProvider = ({ children }) => {
 
   const [loading, setLoading] = useState(true);
 
+  const { getUserById } = useUserStore((state) => state);
   const handleLogin = async (email, password) => {
     try {
       const res = await api.post("/auth/login", {
@@ -20,7 +22,7 @@ const AuthProvider = ({ children }) => {
       setAuth(res.data.data);
       navigate("/");
     } catch (error) {
-      alert(error.response.data.message);
+      toast.error("Sai thông tin đăng nhập");
     }
   };
 
@@ -37,7 +39,8 @@ const AuthProvider = ({ children }) => {
     const verify = async () => {
       try {
         const res = await api.get("/auth/verify-token");
-        setAuth(res.data.data);
+        const user = await getUserById(res.data.data.id);
+        setAuth({ ...user });
         setLoading(false);
       } catch (error) {
         navigate("/login");
@@ -48,7 +51,9 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth, handleLogin, handleLogOut }}>
+    <AuthContext.Provider
+      value={{ auth, setAuth, handleLogin, handleLogOut, handleLogin }}
+    >
       {!loading && children}
     </AuthContext.Provider>
   );

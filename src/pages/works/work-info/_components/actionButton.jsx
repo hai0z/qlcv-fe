@@ -115,18 +115,31 @@ export default function ActionButton() {
             </Button>
           )}
           {workStatus === "PENDING" && (
-            <Button
-              disabled={loading}
-              startContent={<CheckCheck />}
-              color="secondary"
-              className="flex-1"
-              onPress={() => {
-                handleUpdateWorkStatus("COMPLETED");
-                confetti();
-              }}
-            >
-              Duyệt
-            </Button>
+            <>
+              <Button
+                disabled={loading}
+                startContent={<CheckCheck />}
+                color="secondary"
+                className="flex-1"
+                onPress={() => {
+                  handleUpdateWorkStatus("COMPLETED");
+                  confetti();
+                }}
+              >
+                Duyệt
+              </Button>
+              <Button
+                disabled={loading}
+                startContent={<RefreshCw />}
+                color="primary"
+                className="flex-1"
+                onPress={() => {
+                  handleUpdateWorkStatus("IN_PROGRESS");
+                }}
+              >
+                Làm lại
+              </Button>
+            </>
           )}
 
           {workStatus === "PAUSE" && (
@@ -181,8 +194,13 @@ export default function ActionButton() {
               <CheckCheck color="green" /> Công việc đã hoàn thành
             </span>
           )}
+          {workStatus === "PAUSE" && (
+            <span className="flex flex-row items-center gap-2">
+              <Pause color="yellow" /> Công việc đang tạm dừng
+            </span>
+          )}
         </div>
-      ) : (
+      ) : !user.role === "ADMIN" ? (
         <div className="flex flex-row justify-between gap-4 w-full">
           <Button
             disabled={loading}
@@ -204,6 +222,8 @@ export default function ActionButton() {
             Rời việc
           </Button>
         </div>
+      ) : (
+        <span>Đang theo dõi công việc này</span>
       )}
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} backdrop="opaque">
         <ModalContent>

@@ -24,19 +24,14 @@ import {
   HomeIcon,
   PlusCircle,
   SearchIcon,
-  Star,
   Table,
-  Tag,
-  UserPlus,
   UserRound,
-  UsersRound,
   CalendarClock,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/authProvider";
 import ThemeSwitch from "./themeSwitch";
 import useWorkStore from "../store/workStore";
-import dayjs from "dayjs";
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
@@ -44,15 +39,12 @@ export default function App() {
 
   const { auth: user, handleLogOut } = useContext(AuthContext);
 
-  const [deadlines, setDeadLines] = React.useState([]);
-
-  const { todayWorks, getTodayWorks, listWorks, getListWorks } = useWorkStore(
-    (state) => state
-  );
+  const { todayWorks, getTodayWorks } = useWorkStore((state) => state);
 
   useEffect(() => {
     getTodayWorks();
   }, []);
+
   return (
     <div className="container pb-20 ">
       <Navbar
@@ -125,10 +117,10 @@ export default function App() {
                   as="button"
                   className="transition-transform"
                   color="secondary"
-                  name={user?.name || ""}
+                  // name={user?.name || ""}
                   size="md"
-                  src={user?.image || ""}
-                  showFallback
+                  src={user?.avatar || ""}
+                  // showFallback
                 />
               </DropdownTrigger>
               <DropdownMenu
@@ -141,7 +133,6 @@ export default function App() {
                     <p className="font-semibold">{user?.name}</p>
                   </DropdownItem>
                 </DropdownSection>
-
                 <DropdownItem
                   key="settings"
                   as={Link}

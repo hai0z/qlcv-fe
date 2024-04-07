@@ -6,6 +6,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
   Button,
+  Chip,
 } from "@nextui-org/react";
 import { MoreVertical } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -19,7 +20,6 @@ import { useTheme } from "next-themes"; // Optional Theme applied to the grid
 function listUsersPage() {
   const navigate = useNavigate();
 
-  //get theme from next theme
   const { theme } = useTheme();
 
   const { getListUsers } = useUserStore((state) => state);
@@ -33,7 +33,7 @@ function listUsersPage() {
     })();
   }, []);
 
-  const [colDefs, setColDefs] = useState([
+  const [colDefs] = useState([
     {
       field: "avatar",
       headerName: "Ảnh đại diện",
@@ -46,13 +46,16 @@ function listUsersPage() {
     { field: "email", headerName: "Email", floatingFilter: true },
     { field: "name", headerName: "Họ và tên", floatingFilter: true },
     { field: "address", headerName: "Địa chỉ", floatingFilter: true },
-    { field: "password", headerName: "Mật khẩu", floatingFilter: true },
     {
       field: "role",
       headerName: "Vai trò",
       cellRenderer: (params) => (
         <div className="capitalize">
-          {params.value === "ADMIN" ? "Người quản trị" : "Người dùng"}
+          {params.value === "ADMIN" ? (
+            <Chip color="primary">Quản trị viên</Chip>
+          ) : (
+            <Chip color="success">Người dùng</Chip>
+          )}
         </div>
       ),
     },
@@ -71,7 +74,9 @@ function listUsersPage() {
               <DropdownItem as={Link} to={`/profile/${params.value}`}>
                 Xem thông tin
               </DropdownItem>
-              <DropdownItem>Sửa</DropdownItem>
+              <DropdownItem as={Link} to={`/users/edit/${params.value}`}>
+                Sửa
+              </DropdownItem>
               <DropdownItem>Xoá</DropdownItem>
             </DropdownMenu>
           </Dropdown>
@@ -82,20 +87,15 @@ function listUsersPage() {
 
   return (
     <div className="w-full flex flex-col gap-8 xl:flex-row">
-      <div
-        className="w-full"
-        initial={{ opacity: 0, x: -100 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -100 }}
-        transition={{ duration: 0.3 }}
-      >
+      <div className="w-full">
         <h2 className="font-bold text-lg">Danh sách nhân sự</h2>
         <Card
           radius="none"
           className={`${
-            theme === "light" ? "ag-theme-material" : "ag-theme-material-dark"
+            theme === "light" || theme === "plus"
+              ? "ag-theme-material"
+              : "ag-theme-material-dark"
           } mt-4 h-screen`}
-          // style={{ height: 650 }}
         >
           <AgGridReact
             defaultColDef={{

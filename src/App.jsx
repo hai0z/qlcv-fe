@@ -10,7 +10,7 @@ const root = createRoot(document.getElementById("app"));
 
 root.render(
   <NextUIProvider>
-    <ThemeProvider enableSystem>
+    <ThemeProvider enableSystem defaultTheme="plus">
       <RouterProvider router={router} />
     </ThemeProvider>
   </NextUIProvider>

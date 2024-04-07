@@ -30,6 +30,16 @@ const useUserStore = create((set) => ({
       throw error.response.data;
     }
   },
+
+  updateUser: async (id, data) => {
+    try {
+      await api.put(`/user/${id}`, {
+        data,
+      });
+    } catch (error) {
+      throw error.response.data;
+    }
+  },
 }));
 
 export default useUserStore;

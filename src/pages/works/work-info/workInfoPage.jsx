@@ -14,7 +14,7 @@ import {
   Spinner,
 } from "@nextui-org/react";
 import { Eye, FileText, MoreVertical, Sparkles } from "lucide-react";
-import React from "react";
+import React, { useContext } from "react";
 import parse from "html-react-parser";
 import dayjs from "dayjs";
 import { useParams } from "react-router-dom";
@@ -33,6 +33,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { motion } from "framer-motion";
 import "dayjs/locale/vi";
 import useWorkStore from "../../../store/workStore";
+import { AuthContext } from "../../../context/authProvider";
 
 dayjs.locale("vi");
 dayjs.extend(relativeTime);
@@ -44,6 +45,7 @@ function WorkInfoPage() {
 
   const workProgess = React.useMemo(() => calulateWorkProgress(work), [work]);
 
+  const { auth } = useContext(AuthContext);
   React.useEffect(() => {
     getWorkById(workId);
     window.scrollTo(0, 0);
@@ -63,13 +65,7 @@ function WorkInfoPage() {
     <motion.div className="mx-6 lg:mx-28 min-h-screen bg-background pb-16">
       <div className="lg:pt-24 pt-8 w-full h-full">
         <div className="w-full flex flex-col gap-8 xl:flex-row">
-          <motion.div
-            className="w-full xl:w-8/12"
-            initial={{ opacity: 0, x: -200 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, y: -200 }}
-            transition={{ duration: 0.5 }}
-          >
+          <div className="w-full xl:w-8/12">
             <motion.h2 className="font-bold text-lg">
               Chi tiết công việc
             </motion.h2>
@@ -137,25 +133,20 @@ function WorkInfoPage() {
                 </div>
               </CardBody>
             </Card>
-            <AddMemberModal />
+            <div className="mt-4">
+              {auth.role === "ADMIN" ? (
+                <AddMemberModal />
+              ) : (
+                <span className="text-tiny">Người thực hiện</span>
+              )}
+            </div>
             <div className="mt-4 gap-4 flex flex-col">
               <Implementer />
             </div>
-          </motion.div>
-          <motion.div
-            className="w-full xl:w-4/12 mt-[44px]"
-            initial={{ opacity: 0, scale: 0.75 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5 }}
-            transition={{ duration: 0.3, delay: 0.25, ease: "linear" }}
-          >
+          </div>
+          <div className="w-full xl:w-4/12 mt-[44px]">
             <div className="flex w-full flex-col">
-              <Tabs
-                aria-label="Options"
-                radius="none"
-                className="mx-1"
-                color="primary"
-              >
+              <Tabs aria-label="Options" radius="md" className="mx-1">
                 <Tab key="overview" title="Chung">
                   <Card shadow="sm" radius="none">
                     <CardBody>
@@ -170,7 +161,13 @@ function WorkInfoPage() {
                           <p className="text-lg font-bold">
                             {work.createdBy.name}
                           </p>
-                          <p>{work.createdBy.role}</p>
+                          <p className="mt-1">
+                            {work.createdBy.role === "ADMIN" ? (
+                              <Chip color="primary">Quản trị viên</Chip>
+                            ) : (
+                              <Chip color="success">Người dùng</Chip>
+                            )}
+                          </p>
                         </div>
                         <div className="ml-auto">
                           <Popover placement="top">
@@ -279,7 +276,7 @@ function WorkInfoPage() {
                 </Tab>
               </Tabs>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </motion.div>

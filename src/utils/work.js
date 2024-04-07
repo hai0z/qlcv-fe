@@ -47,14 +47,14 @@ export const workStatusColor = (workStatus) => {
 export const getEventColor = (workStatus) => {
   switch (workStatus) {
     case "IN_PROGRESS":
-      return "#006FEE";
+      return "hsl(var(--nextui-primary))";
     case "COMPLETED":
-      return "#17c964";
+      return "hsl(var(--nextui-success))";
     case "PAUSE":
-      return "#f5a524";
+      return "hsl(var(--nextui-warning))";
     case "PENDING":
-      return "#7828c8";
+      return "hsl(var(--nextui-secondary))";
     case "NEW":
-      return "#f31260";
+      return "hsl(var(--nextui-danger))";
   }
 };

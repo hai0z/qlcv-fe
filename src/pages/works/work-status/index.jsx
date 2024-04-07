@@ -113,7 +113,7 @@ function WorkStatusPage() {
                     onClick={() => navigation("/work-info/" + w.id)}
                   >
                     <TableCell>
-                      <Avatar isBordered />
+                      <Avatar isBordered src={w.createdBy.avatar} />
                     </TableCell>
                     <TableCell>{w.createdBy.name}</TableCell>
                     <TableCell>{w.title}</TableCell>
