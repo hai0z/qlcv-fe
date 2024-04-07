@@ -9,14 +9,16 @@ import {
   Chip,
 } from "@nextui-org/react";
 import { MoreVertical } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import { Link, useNavigate } from "react-router-dom";
 import useUserStore from "../../store/userStore";
 import { AgGridReact } from "ag-grid-react"; // AG Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-material.css";
-import { useTheme } from "next-themes"; // Optional Theme applied to the grid
+import { useTheme } from "next-themes";
+import { AuthContext } from "../../context/authProvider";
+
 function listUsersPage() {
   const navigate = useNavigate();
 
@@ -25,6 +27,8 @@ function listUsersPage() {
   const { getListUsers } = useUserStore((state) => state);
 
   const [listUsers, setListUser] = useState([]);
+
+  const { auth } = useContext(AuthContext);
 
   useEffect(() => {
     (async () => {
@@ -74,10 +78,16 @@ function listUsersPage() {
               <DropdownItem as={Link} to={`/profile/${params.value}`}>
                 Xem thông tin
               </DropdownItem>
-              <DropdownItem as={Link} to={`/users/edit/${params.value}`}>
-                Sửa
-              </DropdownItem>
-              <DropdownItem>Xoá</DropdownItem>
+              {auth.role === "ADMIN" && (
+                <>
+                  <DropdownItem as={Link} to={`/users/edit/${params.value}`}>
+                    Sửa
+                  </DropdownItem>
+                  <DropdownItem onPress={() => alert("Chưa làm")}>
+                    Xoá
+                  </DropdownItem>
+                </>
+              )}
             </DropdownMenu>
           </Dropdown>
         </div>
