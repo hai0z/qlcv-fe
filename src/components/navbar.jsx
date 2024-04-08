@@ -35,7 +35,15 @@ import useWorkStore from "../store/workStore";
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const menuItems = ["Thông tin cá nhân", "Đăng xuất"];
+  const menuItems = [
+    "Mới nhất",
+    "Công việc",
+    "Nhân sự",
+    "Trễ hạn",
+    "Lịch làm việc",
+    "Thông tin cá nhân",
+    "Đăng xuất",
+  ];
 
   const { auth: user, handleLogOut } = useContext(AuthContext);
 
@@ -85,7 +93,7 @@ export default function App() {
           <NavbarBrand>
             <Link
               to={"/"}
-              className="font-bold lg:text-3xl text-warning-500 text-medium"
+              className="font-bold lg:text-3xl text-primary text-medium"
             >
               QUẢN LÝ CÔNG VIỆC
             </Link>

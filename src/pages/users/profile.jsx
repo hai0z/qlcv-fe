@@ -17,6 +17,7 @@ import { ArrowLeft } from "lucide-react";
 import EditUser from "./components/editUser";
 import { AuthContext } from "../../context/authProvider";
 import dayjs from "dayjs";
+import ChangePassword from "./components/changePassword";
 function Profile() {
   const params = useParams();
   const userId = params.userId;
@@ -115,7 +116,9 @@ function Profile() {
               <Tab key="edit" title="Chỉnh sửa thông tin">
                 <EditUser id={auth.id} />
               </Tab>
-              <Tab key="changePassword" title="Đổi mật khẩu"></Tab>
+              <Tab key="changePassword" title="Đổi mật khẩu">
+                <ChangePassword />
+              </Tab>
             </Tabs>
           ) : (
             <Card radius="none">

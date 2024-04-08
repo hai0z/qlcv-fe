@@ -27,7 +27,7 @@ function WorkStatusMenu() {
               as={Link}
               className={
                 pathName === "/work-status"
-                  ? "bg-[#006FEE] text-primary-foreground"
+                  ? "bg-[hsl(var(--nextui-primary))] text-primary-foreground"
                   : ""
               }
             >
@@ -36,7 +36,7 @@ function WorkStatusMenu() {
             <ListboxItem
               className={
                 pathName === "/work-status/new"
-                  ? "bg-[#006FEE] text-primary-foreground"
+                  ? "bg-[hsl(var(--nextui-primary))] text-primary-foreground"
                   : ""
               }
               key="list"
@@ -48,7 +48,7 @@ function WorkStatusMenu() {
             <ListboxItem
               className={
                 pathName === "/work-status/completed"
-                  ? "bg-[#006FEE] text-primary-foreground"
+                  ? "bg-[hsl(var(--nextui-primary))] text-primary-foreground"
                   : ""
               }
               key="copy"
@@ -61,7 +61,7 @@ function WorkStatusMenu() {
               key="copy"
               className={
                 pathName === "/work-status/pasue"
-                  ? "bg-[#006FEE] text-primary-foreground"
+                  ? "bg-[hsl(var(--nextui-primary))] text-primary-foreground"
                   : ""
               }
               to="/work-status/pasue"
@@ -73,7 +73,7 @@ function WorkStatusMenu() {
               key="copy"
               className={
                 pathName === "/work-status/pending"
-                  ? "bg-[#006FEE] text-primary-foreground"
+                  ? "bg-[hsl(var(--nextui-primary))] text-primary-foreground"
                   : ""
               }
               to="/work-status/pending"

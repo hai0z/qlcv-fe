@@ -18,11 +18,13 @@ import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the 
 import "ag-grid-community/styles/ag-theme-material.css";
 import { useTheme } from "next-themes";
 import { AuthContext } from "../../context/authProvider";
-
+import toast from "react-hot-toast";
 function listUsersPage() {
   const { theme } = useTheme();
 
-  const { getListUsers } = useUserStore((state) => state);
+  const { getListUsers, deleteUser, resetPassword } = useUserStore(
+    (state) => state
+  );
 
   const [listUsers, setListUser] = useState([]);
 
@@ -35,6 +37,24 @@ function listUsersPage() {
     })();
   }, []);
 
+  const handleResetPassword = async (id) => {
+    const option = confirm("Bạn muốn đặt lại mật khẩu về mặc định?");
+    option &&
+      toast.promise(resetPassword(id), {
+        loading: "Đang đặt lại mật khẩu...",
+        success: "Đặt lại mật khẩu thành công",
+        error: (error) => error.message,
+      });
+  };
+  const handleDeleteUser = async (id) => {
+    const option = confirm("Bạn muốn xóa người dùng ngày?");
+    option &&
+      toast.promise(deleteUser(id), {
+        loading: "Đang xóa...",
+        success: "Đã xóa người dùng",
+        error: (error) => error.message,
+      });
+  };
   const [colDefs] = useState([
     {
       field: "avatar",
@@ -77,14 +97,19 @@ function listUsersPage() {
                 Xem thông tin
               </DropdownItem>
               {auth.role === "ADMIN" && (
-                <>
-                  <DropdownItem as={Link} to={`/users/edit/${params.value}`}>
-                    Sửa
-                  </DropdownItem>
-                  <DropdownItem onPress={() => alert("Chưa làm")}>
-                    Xoá
-                  </DropdownItem>
-                </>
+                <DropdownItem as={Link} to={`/users/edit/${params.value}`}>
+                  Sửa
+                </DropdownItem>
+              )}
+              {auth.role === "ADMIN" && auth.id !== params.value && (
+                <DropdownItem onPress={() => handleDeleteUser(params.value)}>
+                  Xoá tài khoản
+                </DropdownItem>
+              )}
+              {auth.role === "ADMIN" && (
+                <DropdownItem onPress={() => handleResetPassword(params.value)}>
+                  Đặt lại mật khẩu
+                </DropdownItem>
               )}
             </DropdownMenu>
           </Dropdown>
@@ -92,7 +117,6 @@ function listUsersPage() {
       ),
     },
   ]);
-
   return (
     <div className="w-full flex flex-col gap-8 xl:flex-row">
       <div className="w-full">

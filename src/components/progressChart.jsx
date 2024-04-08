@@ -26,11 +26,6 @@ export default function ProgressChart({ chartData }) {
             options={{
               chart: {
                 type: "pie",
-                events: {
-                  legendClick: function (chartContext, seriesIndex, config) {
-                    console.log(seriesIndex);
-                  },
-                },
               },
               labels: [
                 "Đã hoàn thành",

@@ -40,6 +40,32 @@ const useUserStore = create((set) => ({
       throw error.response.data;
     }
   },
+
+  deleteUser: async (id) => {
+    try {
+      await api.delete(`/user/${id}`);
+    } catch (error) {
+      throw error.response.data;
+    }
+  },
+
+  changePassword: async (id, data) => {
+    try {
+      await api.put(`/user/change-password/${id}`, {
+        ...data,
+      });
+    } catch (error) {
+      throw error.response.data;
+    }
+  },
+
+  resetPassword: async (id) => {
+    try {
+      await api.put(`/user/reset-password/${id}`);
+    } catch (error) {
+      throw error.response.data;
+    }
+  },
 }));
 
 export default useUserStore;

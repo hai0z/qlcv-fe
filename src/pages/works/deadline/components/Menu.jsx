@@ -27,7 +27,7 @@ function DeadLineMenu() {
               as={Link}
               className={
                 pathName === "/deadline"
-                  ? "bg-[#006FEE] text-primary-foreground"
+                  ? "bg-[hsl(var(--nextui-primary))] text-primary-foreground"
                   : ""
               }
             >
@@ -39,7 +39,7 @@ function DeadLineMenu() {
               as={Link}
               className={
                 pathName === "/deadline/upcoming"
-                  ? "bg-[#006FEE] text-primary-foreground"
+                  ? "bg-[hsl(var(--nextui-primary))] text-primary-foreground"
                   : ""
               }
             >

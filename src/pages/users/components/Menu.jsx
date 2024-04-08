@@ -28,7 +28,7 @@ function Menu() {
                 as={Link}
                 className={
                   pathName === "/users"
-                    ? "bg-[#006FEE] text-primary-foreground mb-1"
+                    ? "bg-[hsl(var(--nextui-primary))] text-primary-foreground mb-1"
                     : "mb-1"
                 }
               >
@@ -40,7 +40,7 @@ function Menu() {
                 to="/users/stats"
                 className={
                   pathName === "/users/stats"
-                    ? "bg-[#006FEE] text-primary-foreground"
+                    ? "bg-[hsl(var(--nextui-primary))] text-primary-foreground"
                     : ""
                 }
               >

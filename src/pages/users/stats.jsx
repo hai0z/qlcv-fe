@@ -21,12 +21,15 @@ import {
   Button,
   Input,
   Spinner,
+  Tabs,
+  Tab,
 } from "@nextui-org/react";
 import { calulateWorkProgress } from "../../utils/work";
 import React, { useEffect } from "react";
 import api from "../../api/config";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
+import StatsChart from "./components/statsChart";
 function Stats() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -121,76 +124,86 @@ function Stats() {
               </Select>
             </div>
           </CardHeader>
-          <CardBody>
-            <div className="w-full ">
-              <div className="mt-2 mb-4">
-                <span className="capitalize">
-                  Từ: {dayjs(startTime).format("dddd DD/MM/YYYY HH:mm")}
-                </span>
-                <span className="mx-2"> đến </span>
-                <span className="capitalize">
-                  {dayjs(endTime).format("dddd DD/MM/YYYY HH:mm")}
-                </span>
-              </div>
-              {loading ? (
-                <div className="w-full h-96 flex justify-center items-center">
-                  <Spinner color="primary" size="md" />
+          <Tabs className="mx-2">
+            <Tab key="overview" title="Chung">
+              <CardBody>
+                <div className="w-full ">
+                  <div className="mt-2 mb-4">
+                    <span className="capitalize">
+                      Từ: {dayjs(startTime).format("dddd DD/MM/YYYY HH:mm")}
+                    </span>
+                    <span className="mx-2"> đến </span>
+                    <span className="capitalize">
+                      {dayjs(endTime).format("dddd DD/MM/YYYY HH:mm")}
+                    </span>
+                  </div>
+                  {loading ? (
+                    <div className="w-full h-96 flex justify-center items-center">
+                      <Spinner color="primary" size="md" />
+                    </div>
+                  ) : (
+                    <Table
+                      aria-label="Example static collection table"
+                      radius="none"
+                      selectionMode="single"
+                    >
+                      <TableHeader>
+                        <TableColumn>#</TableColumn>
+                        <TableColumn>Avatar</TableColumn>
+                        <TableColumn>Họ và tên</TableColumn>
+                        <TableColumn>Tổng việc</TableColumn>
+                        <TableColumn>Tỉ lệ hoàn thành</TableColumn>
+                      </TableHeader>
+                      <TableBody>
+                        {stats?.map((item, index) => (
+                          <TableRow
+                            className="cursor-pointer"
+                            key={index}
+                            onClick={() => {
+                              onOpenStats();
+                              setStatsModalData(item.WorkImplementer);
+                            }}
+                          >
+                            <TableCell>{index + 1}</TableCell>
+                            <TableCell>
+                              <Avatar src={item.avatar} />
+                            </TableCell>
+                            <TableCell>
+                              <div>
+                                <span className="font-bold">{item.name}</span>{" "}
+                                <br />
+                                <span className="text-sm text-foreground-400">
+                                  {item.email}
+                                </span>
+                              </div>
+                            </TableCell>
+                            <TableCell>{item.totalWork}</TableCell>
+                            <TableCell>
+                              <CircularProgress
+                                showValueLabel
+                                value={
+                                  Number.isNaN(
+                                    item.totalCompleted / item.totalWork
+                                  )
+                                    ? 0
+                                    : (item.totalCompleted / item.totalWork) *
+                                      100
+                                }
+                                color="success"
+                              />
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  )}
                 </div>
-              ) : (
-                <Table
-                  aria-label="Example static collection table"
-                  radius="none"
-                  selectionMode="single"
-                >
-                  <TableHeader>
-                    <TableColumn>#</TableColumn>
-                    <TableColumn>Avatar</TableColumn>
-                    <TableColumn>Họ và tên</TableColumn>
-                    <TableColumn>Tổng việc</TableColumn>
-                    <TableColumn>Tỉ lệ hoàn thành</TableColumn>
-                  </TableHeader>
-                  <TableBody>
-                    {stats?.map((item, index) => (
-                      <TableRow
-                        className="cursor-pointer"
-                        key={index}
-                        onClick={() => {
-                          onOpenStats();
-                          setStatsModalData(item.WorkImplementer);
-                        }}
-                      >
-                        <TableCell>{index + 1}</TableCell>
-                        <TableCell>
-                          <Avatar src={item.avatar} />
-                        </TableCell>
-                        <TableCell>
-                          <div>
-                            <span className="font-bold">{item.name}</span>{" "}
-                            <br />
-                            <span className="text-sm text-foreground-400">
-                              {item.email}
-                            </span>
-                          </div>
-                        </TableCell>
-                        <TableCell>{item.totalWork}</TableCell>
-                        <TableCell>
-                          <CircularProgress
-                            showValueLabel
-                            value={
-                              Number.isNaN(item.totalCompleted / item.totalWork)
-                                ? 0
-                                : (item.totalCompleted / item.totalWork) * 100
-                            }
-                            color="success"
-                          />
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              )}
-            </div>
-          </CardBody>
+              </CardBody>
+            </Tab>
+            <Tab key="stats" title="biểu đồ">
+              <StatsChart data={stats} />
+            </Tab>
+          </Tabs>
         </Card>
       </div>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
