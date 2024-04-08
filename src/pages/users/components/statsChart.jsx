@@ -1,7 +1,8 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
-
+import { useTheme } from "next-themes";
 function StatsChart({ data }) {
+  const { theme } = useTheme();
   const series = [
     {
       data: data.map((w) => w.totalWork),
@@ -32,9 +33,37 @@ function StatsChart({ data }) {
           },
           dataLabels: {
             enabled: true,
+            offsetX: -6,
+            style: {
+              fontSize: "12px",
+              colors: ["hsl(var(--nextui-foreground))"],
+            },
+          },
+          tooltip: {
+            theme: theme === "dark" || theme === "flat" ? "dark" : "light",
+          },
+          yaxis: {
+            labels: {
+              style: {
+                colors: ["hsl(var(--nextui-foreground))"],
+              },
+            },
+          },
+          legend: {
+            labels: {
+              colors: [
+                "hsl(var(--nextui-foreground))",
+                "hsl(var(--nextui-foreground))",
+              ],
+            },
           },
           xaxis: {
             categories: data.map((w) => w.name),
+            labels: {
+              style: {
+                colors: ["hsl(var(--nextui-foreground))"],
+              },
+            },
           },
         }}
       />
