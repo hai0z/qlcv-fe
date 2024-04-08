@@ -74,9 +74,9 @@ function listUsersPage() {
       cellRenderer: (params) => (
         <div className="capitalize">
           {params.value === "ADMIN" ? (
-            <Chip color="primary">Quản trị viên</Chip>
+            <Chip color="danger">Quản trị viên</Chip>
           ) : (
-            <Chip color="success">Người dùng</Chip>
+            <Chip color="warning">Người dùng</Chip>
           )}
         </div>
       ),

@@ -14,7 +14,7 @@ function StatsChart({ data }) {
     },
   ];
   return (
-    <div id="chart" className="h-[50vh]">
+    <div id="chart" className="h-[75vh]">
       <ReactApexChart
         series={series}
         type="bar"
