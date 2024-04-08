@@ -11,7 +11,7 @@ import {
 import { MoreVertical } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import "react-quill/dist/quill.snow.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useUserStore from "../../store/userStore";
 import { AgGridReact } from "ag-grid-react"; // AG Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
@@ -20,8 +20,6 @@ import { useTheme } from "next-themes";
 import { AuthContext } from "../../context/authProvider";
 
 function listUsersPage() {
-  const navigate = useNavigate();
-
   const { theme } = useTheme();
 
   const { getListUsers } = useUserStore((state) => state);

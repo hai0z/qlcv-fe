@@ -19,7 +19,7 @@ module.exports = {
             secondary: "#bf95f9",
             background: "#272935",
             success: "#52fa7c",
-            warning: "#f1fa89",
+            warning: "#ffbd2e",
             danger: "#ff5757",
             content1: "#21232d",
           },

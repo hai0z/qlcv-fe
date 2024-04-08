@@ -24,10 +24,10 @@ import {
   workStatusEnumToString,
 } from "../../../utils/work";
 
-import Comment from "./_components/comment";
-import Implementer from "./_components/implementer";
-import ActionButton from "./_components/actionButton";
-import AddMemberModal from "./_components/addMemberModal";
+import Comment from "./components/comment";
+import Implementer from "./components/implementer";
+import ActionButton from "./components/actionButton";
+import AddMemberModal from "./components/addMemberModal";
 
 import relativeTime from "dayjs/plugin/relativeTime";
 import { motion } from "framer-motion";

@@ -165,7 +165,7 @@ export default function ActionButton() {
             Xoá
           </Button>
         </div>
-      ) : isAccepted === "ACCEPTED" ? (
+      ) : !user.role === "ADMIN" ? (
         <div className="flex flex-row justify-between items-center w-full gap-2">
           {workStatus !== "PAUSE" &&
             workStatus !== "PENDING" &&
@@ -199,28 +199,6 @@ export default function ActionButton() {
               <Pause color="yellow" /> Công việc đang tạm dừng
             </span>
           )}
-        </div>
-      ) : !user.role === "ADMIN" ? (
-        <div className="flex flex-row justify-between gap-4 w-full">
-          <Button
-            disabled={loading}
-            startContent={<CheckCheck />}
-            color="success"
-            className="flex-1"
-            onPress={() => {
-              acceptWork(work.id, user.id);
-            }}
-          >
-            Chấp nhận
-          </Button>
-          <Button
-            disabled={loading}
-            startContent={<LogOut />}
-            color="default"
-            onPress={() => declineWork(work.id, user.id)}
-          >
-            Rời việc
-          </Button>
         </div>
       ) : (
         <span>Đang theo dõi công việc này</span>
