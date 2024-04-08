@@ -26,6 +26,7 @@ import React, { useContext } from "react";
 import toast from "react-hot-toast";
 import useWorkStore from "../../../../store/workStore";
 import { AuthContext } from "../../../../context/authProvider";
+import { Link } from "react-router-dom";
 dayjs.extend(relativetime);
 dayjs.locale("vi");
 
@@ -128,18 +129,25 @@ function Implementer() {
                 name={implementer.user.name || " "}
               />
               <div className="flex flex-col justify-center">
-                <div className="flex flex-row gap-8 items-center">
-                  <p className="text-lg font-bold ml-4">
-                    {implementer.user.name}
-                  </p>
+                <div className="flex flex-row gap-8 items-start">
+                  <div>
+                    <p className="text-lg font-bold">{implementer.user.name}</p>
+                    <p>{implementer.user.email}</p>
+                  </div>
                   <Popover placement="right">
                     <PopoverTrigger>
                       <MoreVertical size={16} />
                     </PopoverTrigger>
                     <PopoverContent>
                       <Listbox aria-label="Actions">
-                        <ListboxItem key="new">Xem thông tin</ListboxItem>
-                        {auth.role === "ADMIN" && (
+                        <ListboxItem
+                          key="new"
+                          as={Link}
+                          to={`/profile/${implementer.user.id}`}
+                        >
+                          Xem thông tin
+                        </ListboxItem>
+                        {auth.id === work.createdBy.id && (
                           <ListboxItem
                             key="delete"
                             className="text-danger"
@@ -154,14 +162,6 @@ function Implementer() {
                       </Listbox>
                     </PopoverContent>
                   </Popover>
-                </div>
-                <div className="flex flex-row ml-4 items-center">
-                  <Eye
-                    size={16}
-                    className="mr-2"
-                    color={implementer.seen ? "red" : "gray"}
-                  />
-                  <span>{implementer.seen ? "Đã xem" : "Chưa xem"}</span>
                 </div>
               </div>
               <div className="ml-auto">
