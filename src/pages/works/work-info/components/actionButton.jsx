@@ -165,43 +165,43 @@ export default function ActionButton() {
             Xoá
           </Button>
         </div>
-      ) : !user.role === "ADMIN" ? (
-        <div className="flex flex-row justify-between items-center w-full gap-2">
-          {workStatus !== "PAUSE" &&
-            workStatus !== "PENDING" &&
-            workStatus !== "COMPLETED" && (
+      ) : (
+        user.role !== "ADMIN" && (
+          <div className="flex flex-row justify-between items-center w-full gap-2">
+            {workStatus !== "PAUSE" &&
+              workStatus !== "PENDING" &&
+              workStatus !== "COMPLETED" && (
+                <Button
+                  startContent={<CheckCheck />}
+                  color="success"
+                  className="flex-1"
+                  onPress={() => handleUpdateWorkStatus("PENDING")}
+                >
+                  Hoàn thành
+                </Button>
+              )}
+            {workStatus === "PENDING" && (
               <Button
                 startContent={<CheckCheck />}
-                color="success"
+                color="secondary"
                 className="flex-1"
-                onPress={() => handleUpdateWorkStatus("PENDING")}
+                disabled={true}
               >
-                Hoàn thành
+                Đợi duyệt
               </Button>
             )}
-          {workStatus === "PENDING" && (
-            <Button
-              startContent={<CheckCheck />}
-              color="secondary"
-              className="flex-1"
-              disabled={true}
-            >
-              Đợi duyệt
-            </Button>
-          )}
-          {workStatus === "COMPLETED" && (
-            <span className="flex flex-row items-center gap-2">
-              <CheckCheck color="green" /> Công việc đã hoàn thành
-            </span>
-          )}
-          {workStatus === "PAUSE" && (
-            <span className="flex flex-row items-center gap-2">
-              <Pause color="yellow" /> Công việc đang tạm dừng
-            </span>
-          )}
-        </div>
-      ) : (
-        <span>Đang theo dõi công việc này</span>
+            {workStatus === "COMPLETED" && (
+              <span className="flex flex-row items-center gap-2">
+                <CheckCheck color="green" /> Công việc đã hoàn thành
+              </span>
+            )}
+            {workStatus === "PAUSE" && (
+              <span className="flex flex-row items-center gap-2">
+                <Pause color="yellow" /> Công việc đang tạm dừng
+              </span>
+            )}
+          </div>
+        )
       )}
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} backdrop="opaque">
         <ModalContent>
