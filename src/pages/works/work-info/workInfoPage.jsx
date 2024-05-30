@@ -43,7 +43,7 @@ function WorkInfoPage() {
 
   const { workId } = useParams();
 
-  const workProgess = React.useMemo(() => calulateWorkProgress(work), [work]);
+  // const workProgess = React.useMemo(() => calulateWorkProgress(work), [work]);
 
   const { auth } = useContext(AuthContext);
   React.useEffect(() => {
@@ -62,7 +62,12 @@ function WorkInfoPage() {
     );
   }
   return (
-    <motion.div className="mx-6 lg:mx-28 min-h-screen bg-background pb-16">
+    <motion.div
+      className="mx-6 lg:mx-28 min-h-screen bg-background pb-16"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.3 }}
+    >
       <div className="lg:pt-24 pt-8 w-full h-full">
         <div className="w-full flex flex-col gap-8 xl:flex-row">
           <div className="w-full xl:w-8/12">
