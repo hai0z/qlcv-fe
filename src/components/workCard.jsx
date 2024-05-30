@@ -83,7 +83,6 @@ export default function WorkCard({ work, index }) {
             <div className="flex flex-col gap-1 items-start justify-center">
               <div className="flex flex-row justify-between items-center gap w-full">
                 <div className="flex flex-row gap-2 items-center">
-                  {work.status === "IN_PROGRESS" && <Spinner size="sm" />}
                   <h4
                     className={`text-tiny font-semibold leading-none text-${workStatusColor(
                       work.status
@@ -109,12 +108,12 @@ export default function WorkCard({ work, index }) {
                   )}
                 </div>
               </div>
-              <Progress
+              {/* <Progress
                 value={workProgess}
                 className="mt-2"
                 size="sm"
                 color="success"
-              />
+              /> */}
               <h2 className="text-xl font-semibold leading-none text-default-600 mt-2">
                 {work.title}
               </h2>
@@ -130,8 +129,6 @@ export default function WorkCard({ work, index }) {
                     size="sm"
                     key={implementer.id}
                     src={implementer.user.avatar}
-                    showFallback
-                    name={implementer.user.name}
                   />
                 ))}
               </AvatarGroup>

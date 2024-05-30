@@ -58,8 +58,8 @@ const HomePage = () => {
                 ))}
               </div>
             ) : (
-              <div>
-                <h1 className="text-2xl font-bold">Chưa có công việc</h1>
+              <div className="w-full h-[50vh] justify-center items-center flex">
+                <span>Không có dữ liệu...</span>
               </div>
             )}
             <div className="flex justify-end flex-row w-full mt-4">
@@ -78,29 +78,31 @@ const HomePage = () => {
               )}
             </div>
           </div>
-          <div className="w-full xl:w-4/12 px-2 xl:mt-16">
-            <Tabs aria-label="Options" radius="md" className="mx-1">
-              <Tab key="overview" title="Thống kê">
-                {progressChart && <ProgressChart chartData={progressChart} />}
-              </Tab>
-              <Tab
-                key="activity"
-                title={
-                  notifications.filter((item) => item.isRead === false).length >
-                  0
-                    ? `Thông báo ${
-                        notifications.filter((item) => item.isRead === false)
-                          .length
-                      }`
-                    : "Thông báo"
-                }
-              >
-                {notifications.length > 0 && (
-                  <Notification data={notifications} />
-                )}
-              </Tab>
-            </Tabs>
-          </div>
+          {listWorks.data.length > 0 && (
+            <div className="w-full xl:w-4/12 px-2 xl:mt-16">
+              <Tabs aria-label="Options" radius="md" className="mx-1">
+                <Tab key="overview" title="Thống kê">
+                  {progressChart && <ProgressChart chartData={progressChart} />}
+                </Tab>
+                <Tab
+                  key="activity"
+                  title={
+                    notifications.filter((item) => item.isRead === false)
+                      .length > 0
+                      ? `Thông báo ${
+                          notifications.filter((item) => item.isRead === false)
+                            .length
+                        }`
+                      : "Thông báo"
+                  }
+                >
+                  {notifications.length > 0 && (
+                    <Notification data={notifications} />
+                  )}
+                </Tab>
+              </Tabs>
+            </div>
+          )}
         </div>
       </div>
     </div>

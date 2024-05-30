@@ -71,7 +71,7 @@ export default function AddMemberToWorkModal() {
   return (
     <>
       <div className="flex flex-row justify-between items-center mt-4">
-        <span className="text-tiny ml-8">Người thực hiện</span>
+        <span className="text-tiny">Người thực hiện</span>
         <Button
           size="sm"
           radius="lg"

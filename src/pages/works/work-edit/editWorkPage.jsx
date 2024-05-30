@@ -123,6 +123,7 @@ function EditWorkPage() {
                   <div className="flex flex-col">
                     <span className="text-small">Thời hạn đến</span>
                     <input
+                      required
                       value={dayjs(formik?.values?.endTime).format(
                         "YYYY-MM-DDTHH:mm"
                       )}

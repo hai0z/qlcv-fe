@@ -73,7 +73,6 @@ function CalenderPage() {
                   <Chip color="warning">Tạm dừng</Chip>
                   <Chip color="secondary">Chờ duyệt</Chip>
                   <Chip color="primary">Đang thực hiện</Chip>
-                  <Chip color="danger">Công việc mới</Chip>
                 </div>
               </CardBody>
             </Card>

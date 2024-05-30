@@ -9,7 +9,7 @@ function EditUserPage() {
   return (
     <div className="w-full flex flex-col gap-8">
       <div>
-        <h2 className="font-bold text-lg">Sủa thông tin nhân sự</h2>
+        <h2 className="font-bold text-lg">Sửa thông tin nhân sự</h2>
         <EditUser id={userId} />
       </div>
     </div>

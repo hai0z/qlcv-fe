@@ -37,9 +37,7 @@ function WorkStatusPage() {
         case "/work-status/pending":
           setWorks(data.data.filter((w) => w.status === "PENDING"));
           break;
-        case "/work-status/new":
-          setWorks(data.data.filter((w) => w.status === "NEW"));
-          break;
+
         case "/work-status/deadline":
           setWorks(
             data.data.filter(
@@ -99,7 +97,6 @@ function WorkStatusPage() {
               <TableColumn>Bởi</TableColumn>
               <TableColumn>Công việc</TableColumn>
               <TableColumn>Trạng thái</TableColumn>
-              <TableColumn>Tiên độ</TableColumn>
               <TableColumn>Bắt đầu</TableColumn>
               <TableColumn>Thời hạn</TableColumn>
             </TableHeader>
@@ -118,7 +115,7 @@ function WorkStatusPage() {
                     <TableCell>{w.createdBy.name}</TableCell>
                     <TableCell>{w.title}</TableCell>
                     <TableCell>{workStatus[w.status]}</TableCell>
-                    <TableCell>
+                    {/* <TableCell>
                       <CircularProgress
                         aria-label="progress..."
                         size="md"
@@ -126,7 +123,7 @@ function WorkStatusPage() {
                         color="success"
                         showValueLabel={true}
                       />
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell>
                       {dayjs(w.startTime).format("DD/MM/YYYY HH:mm")}
                     </TableCell>

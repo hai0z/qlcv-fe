@@ -280,7 +280,6 @@ const ViewStatsModal = ({ data, isOpen, onOpenChange }) => {
                 <TableHeader>
                   <TableColumn>Công việc</TableColumn>
                   <TableColumn>Trạng thái</TableColumn>
-                  <TableColumn>Tiến độ</TableColumn>
                   <TableColumn>Bắt đầu</TableColumn>
                   <TableColumn>Thời hạn</TableColumn>
                 </TableHeader>
@@ -297,13 +296,13 @@ const ViewStatsModal = ({ data, isOpen, onOpenChange }) => {
                       >
                         <TableCell>{w.Work.title}</TableCell>
                         <TableCell>{status[w.Work.status]}</TableCell>
-                        <TableCell>
+                        {/* <TableCell>
                           <CircularProgress
                             color="success"
                             value={workProgess}
                             showValueLabel
                           />
-                        </TableCell>
+                        </TableCell> */}
                         <TableCell>
                           {dayjs(w.Work.startTime).format("DD/MM/YYYY HH:mm")}
                         </TableCell>

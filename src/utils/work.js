@@ -16,8 +16,6 @@ export const calulateWorkProgress = (work) => {
 
 export function workStatusEnumToString(status) {
   switch (status) {
-    case "NEW":
-      return "Công việc mới";
     case "IN_PROGRESS":
       return "Đang thực hiện";
     case "COMPLETED":
@@ -39,8 +37,6 @@ export const workStatusColor = (workStatus) => {
       return "warning";
     case "PENDING":
       return "secondary";
-    case "NEW":
-      return "danger";
   }
 };
 
@@ -54,7 +50,5 @@ export const getEventColor = (workStatus) => {
       return "hsl(var(--nextui-warning))";
     case "PENDING":
       return "hsl(var(--nextui-secondary))";
-    case "NEW":
-      return "hsl(var(--nextui-danger))";
   }
 };

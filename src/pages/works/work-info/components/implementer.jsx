@@ -62,9 +62,11 @@ function Implementer() {
           getWorkById(work.id);
           onClose();
           setSelectedImplementer({});
+          setWorkRequestTitle("");
           return "Đã thêm yêu cầu";
         },
         error: (err) => {
+          setWorkRequestTitle("");
           toast.error(err.message);
         },
       }
@@ -115,7 +117,6 @@ function Implementer() {
         error: (err) => toast.error(err.message),
       });
   };
-
   return (
     <div>
       {work.implementer.map((implementer) => (
@@ -124,9 +125,8 @@ function Implementer() {
             <div className="flex flex-row gap-2">
               <Avatar
                 size="lg"
-                showFallback
                 src={implementer.user.avatar || ""}
-                name={implementer.user.name || " "}
+                isBordered
               />
               <div className="flex flex-col justify-center">
                 <div className="flex flex-row gap-8 items-start">
@@ -188,6 +188,9 @@ function Implementer() {
                 <div key={request.id} className="flex flex-col">
                   <div className="flex flex-row items-center gap-2">
                     <Checkbox
+                      isDisabled={
+                        auth.role !== "ADMIN" && auth.id !== implementer.user.id
+                      }
                       onChange={() =>
                         updateCheckList(request.id, !request.isCompleted)
                       }
@@ -204,22 +207,30 @@ function Implementer() {
                         {dayjs(request.createdAt).format("HH:mm, DD/MM/YYYY  ")}
                       </span>
                     </div>
-                    <div className="ml-auto">
-                      <Popover placement="top">
-                        <PopoverTrigger>
-                          <MoreVertical className="cursor-pointer" size={16} />
-                        </PopoverTrigger>
-                        <PopoverContent>
-                          <Button
-                            onPress={() => handleDeleteWorkRequest(request.id)}
-                            variant="light"
-                            size="sm"
-                          >
-                            Xoá
-                          </Button>
-                        </PopoverContent>
-                      </Popover>
-                    </div>
+                    {auth.role === "ADMIN" ||
+                      (auth.id === implementer.user.id && (
+                        <div className="ml-auto">
+                          <Popover placement="top">
+                            <PopoverTrigger>
+                              <MoreVertical
+                                className="cursor-pointer"
+                                size={16}
+                              />
+                            </PopoverTrigger>
+                            <PopoverContent>
+                              <Button
+                                onPress={() =>
+                                  handleDeleteWorkRequest(request.id)
+                                }
+                                variant="light"
+                                size="sm"
+                              >
+                                Xoá
+                              </Button>
+                            </PopoverContent>
+                          </Popover>
+                        </div>
+                      ))}
                   </div>
                   <div className="flex justify-end">
                     <span className="text-xs">

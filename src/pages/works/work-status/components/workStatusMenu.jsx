@@ -33,18 +33,7 @@ function WorkStatusMenu() {
             >
               Đang thực hiện
             </ListboxItem>
-            <ListboxItem
-              className={
-                pathName === "/work-status/new"
-                  ? "bg-[hsl(var(--nextui-primary))] text-primary-foreground"
-                  : ""
-              }
-              key="list"
-              to="/work-status/new"
-              as={Link}
-            >
-              Công việc mới
-            </ListboxItem>
+
             <ListboxItem
               className={
                 pathName === "/work-status/completed"

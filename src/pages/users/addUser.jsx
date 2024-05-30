@@ -48,6 +48,7 @@ function AddUser() {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
+      console.log(values);
       if (!seletedImage) {
         handleCreateUser({
           ...values,

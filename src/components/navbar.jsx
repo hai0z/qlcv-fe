@@ -32,9 +32,8 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../context/authProvider";
 import ThemeSwitch from "./themeSwitch";
 import useWorkStore from "../store/workStore";
+import SearchInput from "./search/SearchInput";
 export default function App() {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
   const menuItems = [
     "Mới nhất",
     "Công việc",
@@ -57,7 +56,6 @@ export default function App() {
     <div className="container pb-20 ">
       <Navbar
         isBlurred={true}
-        onMenuOpenChange={setIsMenuOpen}
         isBordered
         className="fixed h-20"
         maxWidth="full"
@@ -66,30 +64,6 @@ export default function App() {
         }}
       >
         <NavbarContent>
-          <NavbarMenuToggle
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-            className="sm:hidden"
-          />
-          <NavbarMenu>
-            {menuItems.map((item, index) => (
-              <NavbarMenuItem key={`${item}-${index}`}>
-                <Link
-                  aria-label="123"
-                  color={
-                    index === 2
-                      ? "secondary"
-                      : index === menuItems.length - 1
-                      ? "danger"
-                      : "foreground"
-                  }
-                  className="w-full"
-                  href="#"
-                >
-                  {item}
-                </Link>
-              </NavbarMenuItem>
-            ))}
-          </NavbarMenu>
           <NavbarBrand>
             <Link
               to={"/"}
@@ -100,21 +74,7 @@ export default function App() {
           </NavbarBrand>
         </NavbarContent>
 
-        <NavbarContent className="hidden sm:flex gap-4" justify="start">
-          <Input
-            classNames={{
-              base: "max-w-full w-full h-10",
-              mainWrapper: "h-full",
-              input: "text-small",
-              inputWrapper:
-                "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-            }}
-            placeholder="Tìm công việc..."
-            size="md"
-            endContent={<SearchIcon size={24} />}
-            type="search"
-          />
-        </NavbarContent>
+        <SearchInput />
         <NavbarContent justify="end">
           <NavbarContent as="div" justify="end">
             <ThemeSwitch />
@@ -124,11 +84,8 @@ export default function App() {
                   isBordered
                   as="button"
                   className="transition-transform"
-                  color="secondary"
-                  // name={user?.name || ""}
                   size="md"
                   src={user?.avatar || ""}
-                  // showFallback
                 />
               </DropdownTrigger>
               <DropdownMenu
@@ -165,15 +122,12 @@ export default function App() {
         maxWidth="full"
         isBordered
         isBlurred
-        className="hidden sm:flex"
+        className="flex flex-wrap"
         classNames={{
           base: "z-50 lg:px-24 px-0 top-20 fixed",
         }}
       >
-        <NavbarContent
-          className="hidden sm:flex xl:gap-32 md:gap-20"
-          justify="center"
-        >
+        <NavbarContent className="sm:flex xl:gap-32 md:gap-20" justify="center">
           <NavbarItem isActive>
             <Button
               href="/"
@@ -251,20 +205,22 @@ export default function App() {
             </Button>
           </NavbarItem>
 
-          <NavbarItem>
-            <Button
-              aria-label="Trễ hạn"
-              disableRipple
-              className="p-0 bg-transparent data-[hover=true]:bg-transparent"
-              radius="sm"
-              variant="light"
-              as={Link}
-              to={"/deadline"}
-              startContent={<CalendarClock />}
-            >
-              Trễ hạn
-            </Button>
-          </NavbarItem>
+          {user.role === "ADMIN" && (
+            <NavbarItem>
+              <Button
+                aria-label="Trễ hạn"
+                disableRipple
+                className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                radius="sm"
+                variant="light"
+                as={Link}
+                to={"/deadline"}
+                startContent={<CalendarClock />}
+              >
+                Trễ hạn
+              </Button>
+            </NavbarItem>
+          )}
           <NavbarItem>
             <Button
               aria-label="Lịch làm việc"

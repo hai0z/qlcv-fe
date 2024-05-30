@@ -74,29 +74,16 @@ function WorkInfoPage() {
                 <div className="flex flex-row justify-between w-full">
                   <div className="flex flex-row gap-4 items-center">
                     <Sparkles className="text-foreground-300" />
-                    {work.status === "IN_PROGRESS" ? (
-                      <div className="flex flex-row gap-2 items-center">
-                        <Spinner color="primary" size="sm" />
-                        <span className="text-primary text-tiny">
-                          {workStatusEnumToString(work.status)}
-                        </span>
-                      </div>
-                    ) : (
-                      <Chip
-                        color={workStatusColor(work.status)}
-                        size="sm"
-                        radius="sm"
-                      >
-                        <span className="text-tiny">
-                          {workStatusEnumToString(work.status)}
-                        </span>
-                      </Chip>
-                    )}
-                  </div>
 
-                  <div className="flex flex-row gap-2 items-center">
-                    <Eye />
-                    <span>{work.views} lượt xem</span>
+                    <Chip
+                      color={workStatusColor(work.status)}
+                      size="sm"
+                      radius="sm"
+                    >
+                      <span className="text-tiny">
+                        {workStatusEnumToString(work.status)}
+                      </span>
+                    </Chip>
                   </div>
                 </div>
                 <div className="mt-4 w-full">
@@ -109,7 +96,7 @@ function WorkInfoPage() {
                       )}
                     </p>
                   </div>
-                  <Progress
+                  {/* <Progress
                     value={workProgess}
                     isStriped
                     size="md"
@@ -117,20 +104,24 @@ function WorkInfoPage() {
                     label=" "
                     color="success"
                     className="w-full mt-4"
-                  />
+                  /> */}
                 </div>
               </CardHeader>
               <CardBody>
-                <div className="flex flex-row gap-2 items-center px-4">
-                  <FileText size={16} />
-                  <span>Mô tả chi tiết</span>
-                </div>
-                <div className="mt-4 px-4 prose ">
-                  <span className="text-foreground">
-                    {" "}
-                    {parse(work.description)}
-                  </span>
-                </div>
+                {work.description && (
+                  <>
+                    <div className="flex flex-row gap-2 items-center">
+                      <FileText size={16} />
+                      <span>Mô tả chi tiết</span>
+                    </div>
+                    <div className="mt-4 px-4 prose ">
+                      <span className="text-foreground">
+                        {" "}
+                        {parse(work.description)}
+                      </span>
+                    </div>
+                  </>
+                )}
               </CardBody>
             </Card>
             <div className="mt-4">
@@ -163,28 +154,11 @@ function WorkInfoPage() {
                           </p>
                           <p className="mt-1">
                             {work.createdBy.role === "ADMIN" ? (
-                              <Chip color="primary">Quản trị viên</Chip>
+                              <p className="text-danger">Quản trị viên</p>
                             ) : (
-                              <Chip color="success">Người dùng</Chip>
+                              <p className="text-warning">Người dùng</p>
                             )}
                           </p>
-                        </div>
-                        <div className="ml-auto">
-                          <Popover placement="top">
-                            <PopoverTrigger>
-                              <MoreVertical className="cursor-pointer" />
-                            </PopoverTrigger>
-                            <PopoverContent>
-                              <div className="px-1 py-2">
-                                <div className="text-small font-bold">
-                                  Popover Content
-                                </div>
-                                <div className="text-tiny">
-                                  This is the popover content
-                                </div>
-                              </div>
-                            </PopoverContent>
-                          </Popover>
                         </div>
                       </div>
                       <Divider className="my-4" />

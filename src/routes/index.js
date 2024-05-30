@@ -19,6 +19,8 @@ import Profile from "../pages/users/profile";
 import Stats from "../pages/users/stats";
 import { useContext } from "react";
 import EditUserPage from "../pages/users/EditUserPage";
+import ProtectedRoute from "./ProtectedRoute";
+
 const RootLayout = () => {
   return (
     <AuthProvider>
@@ -30,19 +32,14 @@ const RootLayout = () => {
     </AuthProvider>
   );
 };
+
 const WorkStatusLayout = () => {
   return (
     <div className="mx-6 lg:mx-28 bg-background min-h-screen pb-16">
       <div className="lg:pt-24 pt-8 w-full h-full">
         <div className="w-full flex flex-col gap-8 xl:flex-row">
           <WorkStatusMenu />
-          <div
-            className="w-full xl:w-8/12"
-            initial={{ opacity: 0, x: -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
-            transition={{ duration: 0.3 }}
-          >
+          <div className="w-full xl:w-8/12">
             <Outlet />
           </div>
         </div>
@@ -58,13 +55,7 @@ const UserLayout = () => {
       <div className="lg:pt-24 pt-8 w-full h-full">
         <div className="w-full flex flex-col gap-8 xl:flex-row">
           {auth.role === "ADMIN" ? <Menu /> : null}
-          <div
-            className="w-full xl:w-8/12"
-            initial={{ opacity: 0, x: -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
-            transition={{ duration: 0.3 }}
-          >
+          <div className="w-full xl:w-8/12">
             <Outlet />
           </div>
         </div>
@@ -79,13 +70,7 @@ const DeadLineLayout = () => {
       <div className="lg:pt-24 pt-8 w-full h-full">
         <div className="w-full flex flex-col gap-8 xl:flex-row">
           <DeadLineMenu />
-          <div
-            className="w-full xl:w-8/12"
-            initial={{ opacity: 0, x: -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
-            transition={{ duration: 0.3 }}
-          >
+          <div className="w-full xl:w-8/12">
             <Outlet />
           </div>
         </div>
@@ -121,10 +106,6 @@ export const router = createBrowserRouter([
           },
           {
             path: "/work-status/pending",
-            element: <WorkStatusPage />,
-          },
-          {
-            path: "/work-status/new",
             element: <WorkStatusPage />,
           },
         ],
@@ -169,15 +150,27 @@ export const router = createBrowserRouter([
           },
           {
             path: "/users/add-user",
-            element: <AddUser />,
+            element: (
+              <ProtectedRoute>
+                <AddUser />
+              </ProtectedRoute>
+            ),
           },
           {
             path: "/users/stats",
-            element: <Stats />,
+            element: (
+              <ProtectedRoute>
+                <Stats />
+              </ProtectedRoute>
+            ),
           },
           {
             path: "/users/edit/:userId",
-            element: <EditUserPage />,
+            element: (
+              <ProtectedRoute>
+                <EditUserPage />
+              </ProtectedRoute>
+            ),
           },
         ],
       },

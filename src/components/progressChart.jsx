@@ -9,8 +9,7 @@ export default function ProgressChart({ chartData }) {
     const inProgress = chartData?.data?.inProgress || 0;
     const pause = chartData?.data?.pause || 0;
     const pending = chartData?.data?.pending || 0;
-    const newWork = chartData?.data?.new || 0;
-    return [completed, newWork, pause, pending, inProgress];
+    return [completed, pause, pending, inProgress];
   };
 
   return (
@@ -29,7 +28,6 @@ export default function ProgressChart({ chartData }) {
               },
               labels: [
                 "Đã hoàn thành",
-                "Công việc mới",
                 "Tạm ngưng",
                 "Chờ duyệt",
                 "Đang thực hiện",
@@ -47,7 +45,6 @@ export default function ProgressChart({ chartData }) {
               },
               colors: [
                 "hsl(var(--nextui-success))",
-                "hsl(var(--nextui-danger))",
                 "hsl(var(--nextui-warning))",
                 "hsl(var(--nextui-secondary))",
                 "hsl(var(--nextui-primary))",
@@ -64,14 +61,14 @@ export default function ProgressChart({ chartData }) {
               ],
             }}
           />
-          <div>
+          {/* <div>
             <Progress
               value={(getSeries()[0] / chartData?.totalWork) * 100 || 0}
               color="success"
               isStriped
               showValueLabel
             />
-          </div>
+          </div> */}
         </CardBody>
       </Card>
     </motion.div>

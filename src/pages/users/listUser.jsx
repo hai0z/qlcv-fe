@@ -30,11 +30,12 @@ function listUsersPage() {
 
   const { auth } = useContext(AuthContext);
 
+  const getUserList = async () => {
+    const users = await getListUsers();
+    setListUser(users);
+  };
   useEffect(() => {
-    (async () => {
-      const users = await getListUsers();
-      setListUser(users);
-    })();
+    getUserList();
   }, []);
 
   const handleResetPassword = async (id) => {
@@ -54,6 +55,7 @@ function listUsersPage() {
         success: "Đã xóa người dùng",
         error: (error) => error.message,
       });
+    getUserList();
   };
   const [colDefs] = useState([
     {
