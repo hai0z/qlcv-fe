@@ -89,7 +89,7 @@ function WorkInfoPage() {
                 <div className="mt-4 w-full">
                   <h2 className="font-bold text-2xl">{work.title}</h2>
                   <div className="flex flex-row justify-between items-center">
-                    <p className="font-semibold text-gray-500 mt-4 text-sm">
+                    <p className="font-semibold text-foreground-500 mt-4 text-sm">
                       Tạo lúc:{" "}
                       {dayjs(work.createdAt).format(
                         "HH:mm:ss, dddd, DD/MM/YYYY  "
@@ -114,9 +114,8 @@ function WorkInfoPage() {
                       <FileText size={16} />
                       <span>Mô tả chi tiết</span>
                     </div>
-                    <div className="mt-4 px-4 prose ">
+                    <div className="mt-4 prose">
                       <span className="text-foreground">
-                        {" "}
                         {parse(work.description)}
                       </span>
                     </div>
