@@ -178,20 +178,22 @@ function AddWorkPage() {
                       className="w-[450px] py-2 border rounded-md mt-2 px-2"
                     />
                   </div>
-                  <Button
-                    onPress={formik.handleSubmit}
-                    radius="none"
-                    color="warning"
-                    className="mt-4"
-                    fullWidth
-                  >
-                    <div className="flex flex-row items-center w-full">
-                      <SendHorizontal />
-                      <div className="w-full flex flex-col">
-                        <span>Tạo công việc</span>
+                  {auth.role === "USER" && (
+                    <Button
+                      onPress={formik.handleSubmit}
+                      radius="none"
+                      color="warning"
+                      className="mt-4"
+                      fullWidth
+                    >
+                      <div className="flex flex-row items-center w-full">
+                        <SendHorizontal />
+                        <div className="w-full flex flex-col">
+                          <span>Tạo công việc</span>
+                        </div>
                       </div>
-                    </div>
-                  </Button>
+                    </Button>
+                  )}
                 </div>
               </CardBody>
             </Card>
