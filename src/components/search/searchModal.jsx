@@ -24,6 +24,25 @@ const workStatus = {
   PENDING: "chọn duyệt",
 };
 
+const HighlightText = ({ text, keyword }) => {
+  const keywordSet = new Set(keyword.toLowerCase().split(""));
+
+  const parts = text
+    .toLowerCase()
+    .split("")
+    .map((char, index) => {
+      if (keywordSet.has(char)) {
+        return (
+          <span className="text-primary font-bold" key={index}>
+            {char}
+          </span>
+        );
+      }
+      return char;
+    });
+
+  return <p>{parts}</p>;
+};
 export default function SearchModal({ isOpen, onOpenChange }) {
   const { results, keyword } = useSearchStore();
   const navigation = useNavigate();
@@ -63,7 +82,9 @@ export default function SearchModal({ isOpen, onOpenChange }) {
                             navigation("/work-info/" + w.id);
                           }}
                         >
-                          <TableCell>{w.title}</TableCell>
+                          <TableCell>
+                            <HighlightText text={w.title} keyword={keyword} />
+                          </TableCell>
                           <TableCell>{workStatus[w.status]}</TableCell>
 
                           <TableCell>
