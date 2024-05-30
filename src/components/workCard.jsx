@@ -71,8 +71,6 @@ export default function WorkCard({ work, index }) {
         <CardBody className="px-3 py-0 text-small text-default-400 flex flex-row p-6 gap-8">
           <div className="flex gap-5">
             <Avatar
-              showFallback
-              name={work.createdBy.name || work.createdBy.email}
               isBordered
               radius="full"
               size="lg"

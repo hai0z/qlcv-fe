@@ -73,10 +73,10 @@ function Implementer() {
     );
   };
 
-  const updateCheckList = async (id, isCompleted) => {
+  const updateCheckList = async (requestId, isCompleted) => {
     toast.promise(
       updateWorkRequest(
-        id,
+        requestId,
         {
           isCompleted,
         },
@@ -130,9 +130,11 @@ function Implementer() {
               />
               <div className="flex flex-col justify-center ml-4">
                 <div className="flex flex-row gap-8">
-                  <div className="w-40 flex-wrap">
-                    <p className="text-lg font-bold">{implementer.user.name}</p>
-                    <p>{implementer.user.email}</p>
+                  <div className="w-44 flex-wrap">
+                    <p className="text-lg font-bold flex-1">
+                      {implementer.user.name}
+                    </p>
+                    <p className="flex-1">{implementer.user.email}</p>
                   </div>
                   <Popover placement="right">
                     <PopoverTrigger>
@@ -248,7 +250,7 @@ function Implementer() {
           </CardBody>
         </Card>
       ))}
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
         <ModalContent>
           {(onClose) => (
             <>

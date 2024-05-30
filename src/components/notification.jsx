@@ -54,11 +54,7 @@ export default function Notification({ data }) {
                   <CardBody>
                     <div className="flex flex-row  gap-4 justify-between">
                       <div className="flex flex-row items-center gap-4 flex-1">
-                        <Avatar
-                          showFallback
-                          name={item?.sender?.name}
-                          src={item?.avatar}
-                        />
+                        <Avatar src={item?.avatar} />
                         <div className="flex-1 flex-col">
                           <div className="flex-row">
                             <span className="font-bold">

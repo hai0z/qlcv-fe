@@ -233,11 +233,7 @@ function AddWorkPage() {
                           className="flex flex-row max-w-full items-center gap-2"
                         >
                           <div className="w-full flex flex-row items-center gap-2">
-                            <Avatar
-                              src={user.avatar || ""}
-                              showFallback
-                              name={user.name || user.email}
-                            />
+                            <Avatar src={user.avatar || ""} />
                             <h3>{user.name}</h3>
                           </div>
                         </Checkbox>

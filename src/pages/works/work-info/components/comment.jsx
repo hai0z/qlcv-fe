@@ -37,6 +37,10 @@ function Comment() {
     });
   };
   const handleDeleteComment = async (id) => {
+    const option = window.confirm("Bạn có chắc muốn xóa bình luận này?");
+    if (!option) {
+      return;
+    }
     toast.promise(deleteComment(id), {
       loading: "Đang xóa...",
       success: () => {
@@ -51,7 +55,7 @@ function Comment() {
       <Card radius="none" className="p-4" shadow="sm">
         <CardBody>
           <div className="flex flex-row items-center gap-4">
-            <Avatar size="md" showFallback name={work.createdBy.name || " "} />
+            <Avatar size="md" src={work.createdBy?.avatar || ""} />
             <Textarea
               value={commentContent}
               onChange={(e) => {
@@ -72,18 +76,13 @@ function Comment() {
             <span className="font-bold">Bình luận: </span>
           </div>
         </CardBody>
-        {work.comments?.map((comment) => {
+        {work.comments?.map((comment, index) => {
           return (
             <Card className="" shadow="none" radius="none" key={comment.id}>
               <CardBody className="my-2">
                 <div className="flex flex-row justify-between">
                   <div className="flex flex-row gap-2 items-center">
-                    <Avatar
-                      src={comment.createdBy?.avatar || ""}
-                      name={comment.createdBy?.name || " "}
-                      size="md"
-                      showFallback
-                    />
+                    <Avatar src={comment.createdBy?.avatar || ""} size="md" />
                     <div className="flex flex-col">
                       <span className="font-bold">
                         {comment.createdBy.name}{" "}
@@ -95,32 +94,26 @@ function Comment() {
                     <p className="text-tiny">
                       {dayjs(comment.createdAt).fromNow()}
                     </p>
-                    <Popover placement="top" radius="none">
+                    <Popover placement="top">
                       <PopoverTrigger>
                         <MoreVertical size={16} className="cursor-pointer" />
                       </PopoverTrigger>
                       <PopoverContent>
-                        <div className="px-1 py-2">
-                          <Button
-                            onPress={() => handleDeleteComment(comment.id)}
-                            radius="none"
-                            variant="light"
-                            endContent={
-                              <Delete
-                                color="hsl(var(--nextui-danger))"
-                                size={16}
-                              />
-                            }
-                            className="text-tiny"
-                          >
-                            Xoá
-                          </Button>
-                        </div>
+                        <Button
+                          onPress={() => handleDeleteComment(comment.id)}
+                          color="danger"
+                          variant="light"
+                          size="sm"
+                        >
+                          Xoá
+                        </Button>
                       </PopoverContent>
                     </Popover>
                   </div>
                 </div>
-                <Divider className="mt-4" />
+                {index < work.comments.length - 1 && (
+                  <Divider className="mt-4" />
+                )}
               </CardBody>
             </Card>
           );

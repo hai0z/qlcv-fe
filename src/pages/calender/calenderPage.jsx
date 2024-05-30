@@ -105,12 +105,7 @@ function CalenderPage() {
                           </span>
                         </div>
                         <div>
-                          <Avatar
-                            size="sm"
-                            src={work.createdBy.avatar || ""}
-                            showFallback
-                            name={work.createdBy.name || ""}
-                          />
+                          <Avatar size="sm" src={work.createdBy.avatar || ""} />
                         </div>
                         <div className="w-full flex flex-col">
                           <span>{work.title}</span>
@@ -128,7 +123,7 @@ function CalenderPage() {
                 ) : (
                   <div className="flex flex-row p-4 bg-foreground-100  my-2 rounded-md justify-between items-center gap-2">
                     <span className="text-xl font-bold">0</span>
-                    <div className="w-full flex flex-col">  
+                    <div className="w-full flex flex-col">
                       <span className="text-center">Công việc</span>
                     </div>
                   </div>

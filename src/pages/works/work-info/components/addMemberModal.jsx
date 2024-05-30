@@ -64,7 +64,7 @@ export default function AddMemberToWorkModal() {
     for (let i = 0; i < users.length; i++) {
       await addMemberToWork(work.id, users[i]);
     }
-    toast.success("Them thanh cong");
+    toast.success("Thêm thành công");
     getWorkById(work.id);
     onOpenChange(false);
   };
@@ -113,11 +113,7 @@ export default function AddMemberToWorkModal() {
                         className="flex flex-row max-w-full items-center"
                       >
                         <div className="w-full flex flex-row items-center gap-2">
-                          <Avatar
-                            src={user.avatar || ""}
-                            showFallback
-                            name={user.name || user.email}
-                          />
+                          <Avatar src={user.avatar || ""} />
                           <h3>{user.name}</h3>
                         </div>
                       </Checkbox>

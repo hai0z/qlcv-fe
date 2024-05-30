@@ -37,9 +37,9 @@ export default function ActionButton() {
 
   const [loading, setLoading] = React.useState(false);
 
-  const isAccepted = work.implementer.filter(
-    (implementer) => implementer.userId === user.id
-  )[0]?.accepted;
+  // const isAccepted = work.implementer.filter(
+  //   (implementer) => implementer.userId === user.id
+  // )[0]?.accepted;
 
   const handleUpdateWorkStatus = async (workStatus) => {
     setLoading(true);
