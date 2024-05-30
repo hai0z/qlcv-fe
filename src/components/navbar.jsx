@@ -23,7 +23,6 @@ import {
   ChevronDown,
   HomeIcon,
   PlusCircle,
-  SearchIcon,
   Table,
   UserRound,
   CalendarClock,
@@ -82,6 +81,7 @@ export default function App() {
               <DropdownTrigger>
                 <Avatar
                   isBordered
+                  color={user?.role === "ADMIN" ? "danger" : "warning"}
                   as="button"
                   className="transition-transform"
                   size="md"

@@ -207,30 +207,31 @@ function Implementer() {
                         {dayjs(request.createdAt).format("HH:mm, DD/MM/YYYY  ")}
                       </span>
                     </div>
-                    {auth.role === "ADMIN" ||
-                      (auth.id === implementer.user.id && (
-                        <div className="ml-auto">
-                          <Popover placement="top">
-                            <PopoverTrigger>
-                              <MoreVertical
-                                className="cursor-pointer"
-                                size={16}
-                              />
-                            </PopoverTrigger>
-                            <PopoverContent>
-                              <Button
-                                onPress={() =>
-                                  handleDeleteWorkRequest(request.id)
-                                }
-                                variant="light"
-                                size="sm"
-                              >
-                                Xoá
-                              </Button>
-                            </PopoverContent>
-                          </Popover>
-                        </div>
-                      ))}
+                    {(auth.role === "ADMIN" ||
+                      auth.id === implementer.user.id) && (
+                      <div className="ml-auto">
+                        <Popover placement="top">
+                          <PopoverTrigger>
+                            <MoreVertical
+                              className="cursor-pointer"
+                              size={16}
+                            />
+                          </PopoverTrigger>
+                          <PopoverContent>
+                            <Button
+                              onPress={() =>
+                                handleDeleteWorkRequest(request.id)
+                              }
+                              variant="light"
+                              size="sm"
+                              color="danger"
+                            >
+                              Xoá
+                            </Button>
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+                    )}
                   </div>
                   <div className="flex justify-end">
                     <span className="text-xs">

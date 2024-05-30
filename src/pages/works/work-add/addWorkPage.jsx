@@ -1,6 +1,4 @@
 import {
-  Accordion,
-  AccordionItem,
   Avatar,
   Button,
   Card,
@@ -11,7 +9,7 @@ import {
   Input,
   Textarea,
 } from "@nextui-org/react";
-import { FileText, SendHorizontal } from "lucide-react";
+import { FileText, SendHorizontal, Search } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -98,7 +96,7 @@ function AddWorkPage() {
     <div className="mx-6 lg:mx-28 bg-background min-h-screen pb-16">
       <div className="lg:pt-24 pt-8 w-full h-full">
         <div className="w-full flex flex-col gap-8 xl:flex-row">
-          <form>
+          <form className="w-full xl:w-8/12">
             <h2 className="font-bold text-lg">Thêm công việc</h2>
             <Card className="mt-4" radius="none" shadow="sm">
               <CardHeader>
@@ -213,29 +211,28 @@ function AddWorkPage() {
                 </CardHeader>
                 <Divider />
                 <CardBody>
-                  <div className="h-80">
+                  <div className="h-80 overflow-y-auto">
                     {auth.role === "ADMIN" && (
-                      <Input
-                        placeholder="Nhập tên người dùng..."
-                        value={searchTerm}
-                        size="sm"
-                        onChange={handleSearch}
-                        className="my-4"
-                      />
+                      <div className="sticky top-0 z-50">
+                        <Input
+                          placeholder="Nhập tên người dùng..."
+                          value={searchTerm}
+                          size="sm"
+                          onChange={handleSearch}
+                          className="my-4 "
+                          endContent={<Search />}
+                          type="search"
+                        />
+                      </div>
                     )}
                     {filteredUsers?.map((user, index) => (
-                      <Card
-                        radius="none"
-                        className="my-2"
-                        key={index}
-                        shadow={"sm"}
-                      >
-                        <CardHeader>
-                          <div className="flex flex-row items-center gap-2">
-                            <Checkbox
-                              value={user.id}
-                              onChange={handleSelectUser}
-                            />
+                      <div className="w-full py-4" key={index}>
+                        <Checkbox
+                          value={user.id}
+                          onChange={handleSelectUser}
+                          className="flex flex-row max-w-full items-center gap-2"
+                        >
+                          <div className="w-full flex flex-row items-center gap-2">
                             <Avatar
                               src={user.avatar || ""}
                               showFallback
@@ -243,8 +240,8 @@ function AddWorkPage() {
                             />
                             <h3>{user.name}</h3>
                           </div>
-                        </CardHeader>
-                      </Card>
+                        </Checkbox>
+                      </div>
                     ))}
                   </div>
                 </CardBody>

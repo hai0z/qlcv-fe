@@ -1,44 +1,35 @@
-import { Palette } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
-import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownSection,
-  DropdownItem,
-  Button,
-} from "@nextui-org/react";
-const ThemeSwitch = () => {
-  const [mounted, setMounted] = useState(false);
-  const { setTheme } = useTheme();
+import React from "react";
+import { VisuallyHidden, useSwitch } from "@nextui-org/react";
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const themes = ["light", "dark", "plus", "flat"];
-  if (!mounted) return null;
+const ThemeSwitch = (props) => {
+  const { setTheme, theme } = useTheme();
+  const { Component, slots, getInputProps, getWrapperProps } = useSwitch(props);
   return (
-    <div className="flex flex-col gap-2">
-      <Dropdown>
-        <DropdownTrigger>
-          <Button
-            variant="bordered"
-            size="sm"
-            color="primary"
-            startContent={<Palette color="hsl(var(--nextui-primary))" />}
-          ></Button>
-        </DropdownTrigger>
-        <DropdownMenu aria-label="Static Actions">
-          {themes.map((theme) => (
-            <DropdownItem key={theme} onClick={() => setTheme(theme)}>
-              <span className="capitalize"> {theme}</span>
-            </DropdownItem>
-          ))}
-        </DropdownMenu>
-      </Dropdown>
+    <div className="flex flex-col gap-2 cursor-pointer">
+      <Component>
+        <VisuallyHidden>
+          <input
+            {...getInputProps()}
+            onChange={() => setTheme(theme === "light" ? "dark" : "light")}
+          />
+        </VisuallyHidden>
+        <div
+          {...getWrapperProps()}
+          className={slots.wrapper({
+            class: [
+              "w-8 h-8",
+              "flex items-center justify-center cursor-pointer",
+              "rounded-lg bg-default-100 hover:bg-default-200",
+            ],
+          })}
+        >
+          {theme === "dark" ? <Sun color="gold" /> : <Moon />}
+        </div>
+      </Component>
     </div>
   );
 };
+
 export default ThemeSwitch;

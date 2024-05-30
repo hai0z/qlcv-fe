@@ -22,7 +22,6 @@ const workStatus = {
   COMPLETED: "đã hoàn thành",
   PAUSE: "đã tạm dừng",
   PENDING: "chọn duyệt",
-  NEW: "Mới",
 };
 
 export default function SearchModal({ isOpen, onOpenChange }) {

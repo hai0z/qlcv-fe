@@ -86,7 +86,6 @@ const DeadLine = () => {
             <TableColumn>Avatar</TableColumn>
             <TableColumn>Bởi</TableColumn>
             <TableColumn>Công việc</TableColumn>
-            <TableColumn>Tiên độ</TableColumn>
             <TableColumn>Bắt đầu</TableColumn>
             <TableColumn>Thời hạn</TableColumn>
             {pathName === "/deadline" ? (
@@ -97,7 +96,6 @@ const DeadLine = () => {
           </TableHeader>
           <TableBody emptyContent="Không có dữ liệu">
             {works.map((w, index) => {
-              const workProgess = () => calulateWorkProgress(w);
               return (
                 <TableRow
                   key={index}
@@ -111,15 +109,7 @@ const DeadLine = () => {
                   </TableCell>
                   <TableCell>{w.createdBy.name}</TableCell>
                   <TableCell>{w.title}</TableCell>
-                  <TableCell>
-                    <CircularProgress
-                      aria-label="progress..."
-                      size="md"
-                      value={workProgess()}
-                      color="success"
-                      showValueLabel={true}
-                    />
-                  </TableCell>
+
                   <TableCell>
                     {dayjs(w.startTime).format("DD/MM/YYYY HH:mm")}
                   </TableCell>

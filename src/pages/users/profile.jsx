@@ -74,6 +74,7 @@ function Profile() {
                       <Avatar
                         className="w-28 h-28"
                         isBordered
+                        color={auth?.role === "ADMIN" ? "danger" : "warning"}
                         src={auth?.avatar}
                       />
                       <h1 className="text-lg font-bold mt-1">{auth?.name}</h1>
@@ -142,6 +143,7 @@ function Profile() {
               <CardBody>
                 <div className="w-full flex flex-col items-center">
                   <Avatar
+                    color={userInfo?.role === "ADMIN" ? "danger" : "warning"}
                     className="w-28 h-28"
                     isBordered
                     src={userInfo?.avatar}

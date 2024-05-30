@@ -17,7 +17,7 @@ import {
   ListboxWrapper,
 } from "@nextui-org/react";
 import toast from "react-hot-toast";
-import { UserRound } from "lucide-react";
+import { Search, UserRound } from "lucide-react";
 import useUserStore from "../../../../store/userStore";
 import useWorkStore from "../../../../store/workStore";
 export default function AddMemberToWorkModal() {
@@ -83,7 +83,7 @@ export default function AddMemberToWorkModal() {
         <Modal
           isOpen={isOpen}
           onOpenChange={onOpenChange}
-          size="lg"
+          size="2xl"
           scrollBehavior="inside"
         >
           <ModalContent>
@@ -93,34 +93,36 @@ export default function AddMemberToWorkModal() {
                   Thêm người thực hiện
                 </ModalHeader>
                 <ModalBody>
-                  <div>
+                  <div className="sticky top-0 z-50">
                     <Input
                       placeholder="Tên người dùng..."
                       onChange={handleSearch}
                       value={searchTerm}
+                      type="search"
+                      endContent={<Search />}
                     />
                   </div>
-                  <div>
-                    {filteredUsers?.map((user, index) => (
-                      <div
-                        className="flex flex-row items-center gap-2 py-3"
-                        key={user.id}
+
+                  {filteredUsers?.map((user, index) => (
+                    <div className="w-full py-3" key={index}>
+                      <Checkbox
+                        value={user.id}
+                        defaultSelected={isUserInWork(user.id)}
+                        isDisabled={isUserInWork(user.id)}
+                        onChange={handleSelectUser}
+                        className="flex flex-row max-w-full items-center"
                       >
-                        <Checkbox
-                          value={user.id}
-                          defaultSelected={isUserInWork(user.id)}
-                          isDisabled={isUserInWork(user.id)}
-                          onChange={handleSelectUser}
-                        />
-                        <Avatar
-                          src={user.avatar || ""}
-                          showFallback
-                          name={user.name || user.email}
-                        />
-                        <h3>{user.name}</h3>
-                      </div>
-                    ))}
-                  </div>
+                        <div className="w-full flex flex-row items-center gap-2">
+                          <Avatar
+                            src={user.avatar || ""}
+                            showFallback
+                            name={user.name || user.email}
+                          />
+                          <h3>{user.name}</h3>
+                        </div>
+                      </Checkbox>
+                    </div>
+                  ))}
                 </ModalBody>
                 <ModalFooter>
                   <Button color="danger" variant="light" onPress={onClose}>

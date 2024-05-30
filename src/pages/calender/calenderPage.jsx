@@ -114,21 +114,21 @@ function CalenderPage() {
                         </div>
                         <div className="w-full flex flex-col">
                           <span>{work.title}</span>
-                          <Progress
+                          {/* <Progress
                             value={calulateWorkProgress(work)}
                             size="sm"
                             color="success"
                             className="mt-1"
-                          />
+                          /> */}
                         </div>
                         <ChevronRight />
                       </Link>
                     </motion.div>
                   ))
                 ) : (
-                  <div className="flex flex-row p-4 bg-foreground-100  hover:bg-foreground-200 my-2 rounded-md justify-between items-center gap-2">
+                  <div className="flex flex-row p-4 bg-foreground-100  my-2 rounded-md justify-between items-center gap-2">
                     <span className="text-xl font-bold">0</span>
-                    <div className="w-full flex flex-col">
+                    <div className="w-full flex flex-col">  
                       <span className="text-center">Công việc</span>
                     </div>
                   </div>
