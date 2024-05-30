@@ -122,15 +122,15 @@ function Implementer() {
       {work.implementer.map((implementer) => (
         <Card radius="none" className="p-4" shadow="sm" key={implementer.id}>
           <CardBody className="pb-8">
-            <div className="flex flex-row gap-2">
+            <div className="flex flex-row gap-2 w-full">
               <Avatar
                 size="lg"
                 src={implementer.user.avatar || ""}
                 isBordered
               />
-              <div className="flex flex-col justify-center">
-                <div className="flex flex-row gap-8 items-start">
-                  <div>
+              <div className="flex flex-col justify-center ml-4">
+                <div className="flex flex-row gap-8">
+                  <div className="w-40 flex-wrap">
                     <p className="text-lg font-bold">{implementer.user.name}</p>
                     <p>{implementer.user.email}</p>
                   </div>
