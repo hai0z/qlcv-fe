@@ -114,7 +114,7 @@ function WorkInfoPage() {
                       <FileText size={16} />
                       <span>Mô tả chi tiết</span>
                     </div>
-                    <div className="mt-4 prose">
+                    <div className="mt-4 prose max-w-full">
                       <span className="text-foreground">
                         {parse(work.description)}
                       </span>
