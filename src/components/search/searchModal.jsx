@@ -30,7 +30,7 @@ export default function SearchModal({ isOpen, onOpenChange }) {
   const navigation = useNavigate();
   return (
     <>
-      <Modal size="2xl" isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal size="5xl" isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
