@@ -16,6 +16,7 @@ import {
   Input,
   Chip,
   Avatar,
+  Badge,
 } from "@nextui-org/react";
 import {
   Briefcase,
@@ -32,19 +33,10 @@ import { AuthContext } from "../context/authProvider";
 import ThemeSwitch from "./themeSwitch";
 import useWorkStore from "../store/workStore";
 import SearchInput from "./search/SearchInput";
+import { useTheme } from "next-themes";
 export default function App() {
-  const menuItems = [
-    "Mới nhất",
-    "Công việc",
-    "Nhân sự",
-    "Trễ hạn",
-    "Lịch làm việc",
-    "Thông tin cá nhân",
-    "Đăng xuất",
-  ];
-
   const { auth: user, handleLogOut } = useContext(AuthContext);
-
+  const { setTheme, theme } = useTheme();
   const { todayWorks, getTodayWorks } = useWorkStore((state) => state);
 
   useEffect(() => {
@@ -76,7 +68,6 @@ export default function App() {
         <SearchInput />
         <NavbarContent justify="end">
           <NavbarContent as="div" justify="end">
-            <ThemeSwitch />
             <Dropdown placement="bottom-end">
               <DropdownTrigger>
                 <Avatar
@@ -88,14 +79,42 @@ export default function App() {
                   src={user?.avatar || ""}
                 />
               </DropdownTrigger>
-              <DropdownMenu
-                aria-label="Profile Actions"
-                variant="flat"
-                disabledKeys={["profile"]}
-              >
+              <DropdownMenu aria-label="Profile Actions" variant="flat">
                 <DropdownSection showDivider>
-                  <DropdownItem key="profile" className="h-14 gap-2" isReadOnly>
-                    <p className="font-semibold">{user?.name}</p>
+                  <DropdownItem
+                    key="profile"
+                    className="h-14 gap-2"
+                    shortcut={user.role}
+                  >
+                    <div className="flex flex-row items-center gap-2">
+                      <div>
+                        <p className="font-semibold capitalize">{user?.name}</p>
+                        <p className="font-semibold text-tiny text-foreground-400">
+                          {user?.email}
+                        </p>
+                      </div>
+                    </div>
+                  </DropdownItem>
+                </DropdownSection>
+                <DropdownSection aria-label="Preferences" showDivider>
+                  <DropdownItem
+                    isReadOnly
+                    key="theme"
+                    className="cursor-default"
+                    endContent={
+                      <select
+                        defaultValue={theme}
+                        onChange={(e) => setTheme(e.target.value)}
+                        className="z-10 outline-none w-16 py-0.5 rounded-md text-tiny group-data-[hover=true]:border-default-500 border-small border-default-300 dark:border-default-200 bg-transparent text-default-500"
+                        id="theme"
+                        name="theme"
+                      >
+                        <option>light</option>
+                        <option>dark</option>
+                      </select>
+                    }
+                  >
+                    Chủ đề
                   </DropdownItem>
                 </DropdownSection>
                 <DropdownItem

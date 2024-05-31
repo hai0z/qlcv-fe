@@ -211,7 +211,7 @@ function AddWorkPage() {
                 </CardHeader>
                 <Divider />
                 <CardBody>
-                  <div className="h-80 overflow-y-auto">
+                  <div className="h-80 overflow-y-scroll">
                     {auth.role === "ADMIN" && (
                       <div className="sticky top-0 z-50">
                         <Input
